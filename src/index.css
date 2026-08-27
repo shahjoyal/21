@@ -1,0 +1,89 @@
+@import "tailwindcss";
+
+@layer base {
+  html, body {
+    scroll-behavior: smooth;
+    font-family: 'Outfit', sans-serif;
+    overflow-x: hidden;
+    max-width: 100vw;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  #root {
+    overflow-x: hidden;
+    max-width: 100vw;
+    width: 100%;
+  }
+}
+
+.font-serif-luxury {
+  font-family: 'Cinzel', 'Playfair Display', serif;
+}
+
+.font-devanagari {
+  font-family: 'Rozha One', 'Yantramanav', sans-serif;
+}
+
+.font-devanagari-body {
+  font-family: 'Yantramanav', sans-serif;
+}
+
+/* Regal Brand Colors helper classes */
+.bg-brand-emerald {
+  background-color: #134e48;
+}
+
+.text-brand-emerald {
+  color: #134e48;
+}
+
+.bg-brand-gold {
+  background-color: #E89A25;
+}
+
+.text-brand-gold {
+  color: #D4881E;
+}
+
+.bg-brand-cream {
+  background-color: #FAF7F2;
+}
+
+/* Gold foil sheen effect */
+.gold-shimmer {
+  background: linear-gradient(135deg, #ECC94B 0%, #D69E2E 25%, #F6E05E 50%, #B7791F 75%, #D69E2E 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gold-badge-bg {
+  background: linear-gradient(135deg, #134e48 0%, #0d3834 100%);
+  border: 1px solid rgba(232, 154, 37, 0.35);
+}
+
+.gold-glow {
+  box-shadow: 0 4px 20px -2px rgba(232, 154, 37, 0.25);
+}
+
+/* Custom Scrollbar for smooth luxury feel */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #FAF7F2;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #D4881E40;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #D4881E80;
+}
+

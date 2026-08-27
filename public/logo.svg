@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" width="100%" height="100%">
+  <!-- Emerald Green Background -->
+  <rect width="800" height="800" rx="32" fill="#18564D" />
+
+  <!-- 21 + GANESHA MOTIF IN GOLD (#EDA124) -->
+  <g fill="#EDA124">
+    <!-- MARATHI '२' (Digit 2) -->
+    <path d="M293.6 195.4 C293.6 189 306 184 329 184 C360 184 400 202 400 243 C400 274 372 299 344 318 C328 329 314 344 308 358 C302 372 316 386 337 386 C366 386 391 361 396 383 C398 395 382 409 356 409 C314 409 279 383 279 345 C279 313 310 287 340 265 C356 252 365 240 365 227 C365 211 346 203 326 203 C307 203 293.6 210 293.6 195.4 Z" />
+    
+    <!-- Stylized thicker precise calligraphic 2 -->
+    <path d="M300 200 C300 186 320 180 345 180 C385 180 422 205 422 250 C422 285 390 315 360 338 C342 352 328 368 322 385 C316 400 332 414 355 414 C388 414 415 388 420 410 C422 422 404 438 375 438 C328 438 290 410 290 368 C290 332 324 302 356 278 C374 264 384 250 384 235 C384 218 362 208 340 208 C318 208 300 216 300 200 Z" />
+
+    <!-- GANESHA CROWN / MUKUT (3 Tiers) -->
+    <!-- Tier 1 Top Finial -->
+    <path d="M458 178 C458 172 463 166 467 166 C471 166 476 172 476 178 Z" />
+    <!-- Tier 2 Mid Crown -->
+    <path d="M448 188 C448 181 486 181 486 188 C486 192 448 192 448 188 Z" />
+    <!-- Tier 3 Crown Base -->
+    <path d="M438 200 C438 193 496 193 496 200 C496 204 438 204 438 200 Z" />
+
+    <!-- GANESHA FACE, EAR & TRUNK ('१' Digit Silhouette) -->
+    <path d="M468 205 C442 205 416 222 416 252 C416 278 432 298 452 308 C462 313 468 325 458 338 C448 351 432 360 428 370 C445 373 464 370 478 360 C494 347 504 328 501 308 C498 288 485 276 478 263 C472 250 481 231 497 241 C503 244 510 238 507 228 C501 215 485 205 468 205 Z" />
+    
+    <!-- Flowing Trunk & Curved Tusk -->
+    <path d="M450 260 C440 260 435 272 435 285 C435 305 455 315 470 318 C488 322 505 320 514 308 C505 304 492 300 480 295 C468 290 460 280 460 270 C460 262 455 260 450 260 Z" />
+
+    <!-- Ribbon Tail swooping down with swallowtail notch -->
+    <path d="M458 338 C468 325 476 340 485 358 C495 378 510 405 522 428 L498 420 L480 438 C472 410 456 375 448 351 C442 344 450 332 458 338 Z" />
+
+    <!-- TM Trademark text -->
+    <text x="512" y="202" font-family="'Outfit', 'Cinzel', sans-serif" font-size="20" font-weight="800" fill="#EDA124">TM</text>
+  </g>
+
+  <!-- Ganesha Eye / Tilak Cutout (Teal in negative space) -->
+  <ellipse cx="454" cy="245" rx="4" ry="7" fill="#18564D" />
+  <path d="M460 248 C472 252 482 248 488 244" stroke="#18564D" stroke-width="3" stroke-linecap="round" fill="none" />
+
+  <!-- MAIN DEVNAGARI TEXT: "कळ्या" in Cream/Ivory (#F8EDE0) -->
+  <!-- Top Shirorekha Bar -->
+  <rect x="180" y="468" width="440" height="22" rx="3" fill="#F8EDE0" />
+
+  <!-- Custom Bold High-Contrast Devanagari Glyph Shapes for 'कळ्या' -->
+  <g fill="#F8EDE0">
+    <!-- 'क' (Ka) -->
+    <!-- Vertical Danda -->
+    <rect x="250" y="488" width="26" height="152" rx="3" />
+    <!-- Left Loop -->
+    <path d="M250 510 C210 510 192 530 192 562 C192 594 210 614 250 614 Z M224 562 C224 544 234 534 250 534 L250 590 C234 590 224 580 224 562 Z" />
+    <!-- Right Arm Curve -->
+    <path d="M276 525 C298 525 318 540 318 565 C318 595 295 615 276 615 L276 588 C286 588 294 578 294 565 C294 552 286 544 276 544 Z" />
+
+    <!-- 'ळ' (Lha) -->
+    <!-- Left lobe -->
+    <path d="M344 488 L370 488 L370 640 L344 640 Z" />
+    <path d="M344 515 C320 515 320 550 344 555 C320 560 320 615 344 620 L344 592 C334 590 334 575 344 572 C334 568 334 540 344 538 Z" />
+    <!-- Right lobe -->
+    <path d="M370 515 C394 515 394 550 370 555 C394 560 394 615 370 620 L370 592 C380 590 380 575 370 572 C380 568 380 540 370 538 Z" />
+    <rect x="382" y="488" width="24" height="152" rx="3" />
+
+    <!-- '्या' (Yaa) -->
+    <!-- Half-ya loop -->
+    <path d="M430 512 C448 512 458 528 458 550 C458 578 442 596 422 612 L422 585 C434 574 440 562 440 550 C440 538 434 532 426 532 C418 532 414 540 414 552 L414 640 L394 640 L394 488 L414 488 L414 515 C418 513 424 512 430 512 Z" />
+    <!-- Center Ya Stem -->
+    <rect x="470" y="488" width="26" height="152" rx="3" />
+    <!-- Connecting bridge from ya to danda -->
+    <rect x="440" y="555" width="35" height="24" />
+    <!-- Aa-kar Danda (Vertical bar) -->
+    <rect x="520" y="488" width="26" height="152" rx="3" />
+  </g>
+
+  <!-- High-accuracy Devanagari text overlay for crisp rendering across all displays -->
+  <text x="400" y="628" text-anchor="middle" font-family="'Yantramanav', 'Rozha One', 'Noto Sans Devanagari', sans-serif" font-weight="900" font-size="142" letter-spacing="4" fill="#F8EDE0">कळ्या</text>
+
+  <!-- SANSKRIT TAGLINE: — स्वादः परमानन्दः — -->
+  <!-- Left Rule Line -->
+  <line x1="200" y1="695" x2="285" y2="695" stroke="#F8EDE0" stroke-width="3.5" stroke-linecap="round" />
+  
+  <!-- Center Sanskrit Motto -->
+  <text x="400" y="703" text-anchor="middle" font-family="'Yantramanav', 'Rozha One', 'Noto Serif Devanagari', serif" font-weight="700" font-size="28" letter-spacing="3" fill="#F8EDE0">स्वादः परमानन्दः</text>
+  
+  <!-- Right Rule Line -->
+  <line x1="515" y1="695" x2="600" y2="695" stroke="#F8EDE0" stroke-width="3.5" stroke-linecap="round" />
+</svg>
