@@ -6,6 +6,7 @@ import { BrandLogo } from './BrandLogo';
 import { ShoppingBag, Phone, Clock, Menu, X, Gift, MapPin, User, LogOut } from 'lucide-react';
 import { CartItem } from '../types';
 import { useAuth } from '../context/AuthContext';
+import { PromoMarquee } from './PromoMarquee';
 
 interface NavbarProps {
   cart: CartItem[];
@@ -75,6 +76,11 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   return (
     <header className="sticky top-0 z-40 w-full transition-all duration-300">
+      {/* Continuous scrolling promo strip — sits above the nav, inside the
+          same sticky header, so it scrolls with the nav and never overlaps
+          the rest of the page on desktop or mobile. */}
+      <PromoMarquee language={language} />
+
       {/* Main Navigation Bar */}
       <nav
         className={`w-full transition-all duration-300 ${

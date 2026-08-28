@@ -87,3 +87,29 @@
   background: #D4881E80;
 }
 
+/* Continuous scrolling promo strip (marquee) shown above the navbar */
+@keyframes promo-marquee-scroll {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.promo-marquee-track {
+  display: flex;
+  width: max-content;
+  animation: promo-marquee-scroll 22s linear infinite;
+  will-change: transform;
+}
+
+.promo-marquee-track:hover {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .promo-marquee-track {
+    animation: none;
+  }
+}
