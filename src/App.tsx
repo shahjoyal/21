@@ -55,7 +55,6 @@ function AppShell() {
 
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isAuthOpen, setIsAuthOpen] = useState(false);
-  const [isHelperOpen, setIsHelperOpen] = useState(false);
   const [quickViewProduct, setQuickViewProduct] = useState<ModakProduct | null>(null);
   const [isBulkInquiryOpen, setIsBulkInquiryOpen] = useState(false);
 
@@ -188,15 +187,11 @@ function AppShell() {
             onCloseAuth={() => setIsAuthOpen(false)}
             onOpenAuth={() => setIsAuthOpen(true)}
             onAuthenticated={() => navigate('/checkout')}
-            isHelperOpen={isHelperOpen}
-            onOpenHelper={() => setIsHelperOpen(true)}
-            onCloseHelper={() => setIsHelperOpen(false)}
             isBulkInquiryOpen={isBulkInquiryOpen}
             onCloseBulkInquiry={() => setIsBulkInquiryOpen(false)}
             quickViewProduct={quickViewProduct}
             onCloseQuickView={() => setQuickViewProduct(null)}
             onExploreMenu={handleExploreMenu}
-            onExploreWorkshops={() => navigate('/workshops')}
           />
         }
       >

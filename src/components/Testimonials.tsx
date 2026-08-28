@@ -171,7 +171,7 @@ export const Testimonials: React.FC<TestimonialsProps> = ({ language }) => {
         </div>
 
         {/* Filter Pills */}
-        <div className="max-w-5xl mx-auto flex items-center justify-center gap-2 mb-4 overflow-x-auto">
+        <div className="max-w-5xl mx-auto flex items-center sm:justify-center gap-2 mb-4 overflow-x-auto flex-nowrap scroll-smooth snap-x snap-mandatory px-4 sm:px-0 -mx-4 sm:mx-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
           {[
             { id: 'all', label: isMarathi ? 'सर्व अभिप्राय (All Reviews)' : 'All Reviews' },
             { id: 'delivery', label: isMarathi ? 'घरपोच डिलिव्हरी व चव' : 'Fresh Modak Delivery' },
@@ -180,7 +180,7 @@ export const Testimonials: React.FC<TestimonialsProps> = ({ language }) => {
             <button
               key={cat.id}
               onClick={() => setFilterCategory(cat.id)}
-              className={`px-3.5 py-1.5 rounded-lg text-[11px] font-bold transition-all whitespace-nowrap cursor-pointer ${
+              className={`shrink-0 snap-start px-3.5 py-1.5 rounded-lg text-[11px] font-bold transition-all whitespace-nowrap cursor-pointer ${
                 filterCategory === cat.id
                   ? 'bg-[#134e48] text-white shadow-xs'
                   : 'bg-white text-gray-700 border border-gray-200 hover:bg-gray-50'
@@ -198,24 +198,24 @@ export const Testimonials: React.FC<TestimonialsProps> = ({ language }) => {
             type="button"
             onClick={() => scrollByCard('left')}
             aria-label="Previous reviews"
-            className="hidden sm:flex items-center justify-center absolute -left-4 lg:-left-11 top-1/2 -translate-y-1/2 z-10 w-9 h-9 rounded-full bg-white border border-gray-200 shadow-md text-[#134e48] hover:bg-[#134e48] hover:text-white transition-all cursor-pointer active:scale-95"
+            className="flex items-center justify-center absolute left-0.5 sm:-left-4 lg:-left-11 top-1/2 -translate-y-1/2 z-10 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white/95 border border-gray-200 shadow-md text-[#134e48] hover:bg-[#134e48] hover:text-white transition-all cursor-pointer active:scale-95"
           >
-            <ChevronLeft className="w-4.5 h-4.5" />
+            <ChevronLeft className="w-4 h-4 sm:w-4.5 sm:h-4.5" />
           </button>
           <button
             type="button"
             onClick={() => scrollByCard('right')}
             aria-label="Next reviews"
-            className="hidden sm:flex items-center justify-center absolute -right-4 lg:-right-11 top-1/2 -translate-y-1/2 z-10 w-9 h-9 rounded-full bg-white border border-gray-200 shadow-md text-[#134e48] hover:bg-[#134e48] hover:text-white transition-all cursor-pointer active:scale-95"
+            className="flex items-center justify-center absolute right-0.5 sm:-right-4 lg:-right-11 top-1/2 -translate-y-1/2 z-10 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white/95 border border-gray-200 shadow-md text-[#134e48] hover:bg-[#134e48] hover:text-white transition-all cursor-pointer active:scale-95"
           >
-            <ChevronRight className="w-4.5 h-4.5" />
+            <ChevronRight className="w-4 h-4 sm:w-4.5 sm:h-4.5" />
           </button>
 
           <div
             ref={scrollRef}
             className="overflow-x-auto pb-2 scroll-smooth snap-x snap-mandatory [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
           >
-            <div className="flex gap-3.5 w-max max-w-none mx-auto px-1">
+            <div className="flex gap-3.5 w-max max-w-none mx-auto px-10 sm:px-1">
               {filteredReviews.map((rev) => (
                 <div
                   key={rev.id}

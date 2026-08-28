@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import brandLogoImg from '../assets/images/regenerated_image_1787347112518.png';
 import { BrandLogo } from './BrandLogo';
-import { ShoppingBag, Phone, Sparkles, Clock, Menu, X, Gift, MapPin, User, LogOut } from 'lucide-react';
+import { ShoppingBag, Phone, Clock, Menu, X, Gift, MapPin, User, LogOut } from 'lucide-react';
 import { CartItem } from '../types';
 import { useAuth } from '../context/AuthContext';
 
@@ -11,9 +11,7 @@ interface NavbarProps {
   cart: CartItem[];
   onOpenCart: () => void;
   onOpenBulkInquiry: () => void;
-  onOpenHelper?: () => void;
   onOpenAuth?: () => void;
-  onShopNowModaks?: () => void;
   language: 'en' | 'mr';
   onToggleLanguage: () => void;
 }
@@ -22,8 +20,6 @@ export const Navbar: React.FC<NavbarProps> = ({
   cart,
   onOpenCart,
   onOpenBulkInquiry,
-  onOpenHelper,
-  onShopNowModaks,
   onOpenAuth,
   language,
   onToggleLanguage,
@@ -165,10 +161,10 @@ export const Navbar: React.FC<NavbarProps> = ({
               </button>
             )}
 
-            {/* Language Switcher */}
+            {/* Language Switcher (desktop/tablet only — moved into the mobile dropdown below) */}
             <button
               onClick={onToggleLanguage}
-              className="px-2.5 py-1 rounded-lg bg-black/25 text-[#F5EEDB] hover:text-[#E89A25] border border-white/10 hover:border-[#E89A25]/40 text-xs font-bold transition-colors flex items-center gap-1"
+              className="hidden sm:flex px-2.5 py-1 rounded-lg bg-black/25 text-[#F5EEDB] hover:text-[#E89A25] border border-white/10 hover:border-[#E89A25]/40 text-xs font-bold transition-colors items-center gap-1"
               title="Switch Language"
             >
               <span className="w-2 h-2 rounded-full bg-[#E89A25]" />
@@ -215,22 +211,6 @@ export const Navbar: React.FC<NavbarProps> = ({
         {/* Mobile Dropdown Menu */}
         {mobileMenuOpen && (
           <div className="lg:hidden border-t border-[#E89A25]/20 bg-[#0f3c36] px-4 py-4 space-y-2 shadow-2xl animate-in slide-in-from-top duration-200">
-            {/* Primary Mobile CTA */}
-            <button
-              onClick={() => {
-                setMobileMenuOpen(false);
-                if (onShopNowModaks) {
-                  onShopNowModaks();
-                } else {
-                  navigate('/shop');
-                }
-              }}
-              className="w-full text-center px-4 py-3 rounded-xl bg-gradient-to-r from-[#EDA124] to-[#d68516] text-[#18564D] font-black text-sm shadow-lg flex items-center justify-center gap-2 mb-2 active:scale-98 transition-all cursor-pointer"
-            >
-              <Sparkles className="w-4 h-4 text-[#18564D]" />
-              <span>{language === 'mr' ? 'मोदक खरेदी करा (Shop Now Modaks)' : 'Shop Now Modaks'}</span>
-            </button>
-
             {navLinks.map((link, idx) => {
               const active = isLinkActive(link.path);
               return (
@@ -251,23 +231,13 @@ export const Navbar: React.FC<NavbarProps> = ({
             })}
 
             <div className="pt-2 border-t border-white/10 flex flex-col gap-2">
-              {onOpenHelper && (
-                <button
-                  onClick={() => {
-                    setMobileMenuOpen(false);
-                    onOpenHelper();
-                  }}
-                  className="w-full text-left px-4 py-2.5 rounded-xl bg-[#EDA124] text-[#18564D] text-sm font-bold flex items-center justify-between shadow-md"
-                >
-                  <span className="flex items-center gap-2">
-                    <Sparkles className="w-4 h-4" />
-                    <span>Ask Helper (२१ कळ्या AI Concierge)</span>
-                  </span>
-                  <span className="text-[10px] bg-[#18564D] text-[#EDA124] px-2 py-0.5 rounded-full font-bold">
-                    Gemini 3.7
-                  </span>
-                </button>
-              )}
+              <button
+                onClick={onToggleLanguage}
+                className="w-full text-left px-4 py-2.5 rounded-xl text-sm font-medium text-[#F5EEDB] hover:bg-white/10 flex items-center gap-2"
+              >
+                <span className="w-2 h-2 rounded-full bg-[#E89A25]" />
+                {t.langToggle}
+              </button>
 
               <button
                 onClick={() => {
@@ -290,7 +260,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <span>Call Hotline: +91 73044 72460</span>
               </a>
 
-              {user ? (
+              {user && (
                 <button
                   onClick={() => {
                     setMobileMenuOpen(false);
@@ -300,17 +270,6 @@ export const Navbar: React.FC<NavbarProps> = ({
                 >
                   <LogOut className="w-4 h-4 text-[#E89A25]" />
                   <span>Logout ({user.name.split(' ')[0]})</span>
-                </button>
-              ) : (
-                <button
-                  onClick={() => {
-                    setMobileMenuOpen(false);
-                    onOpenAuth && onOpenAuth();
-                  }}
-                  className="w-full text-center py-2.5 rounded-xl bg-[#EDA124] text-[#18564D] text-sm font-bold flex items-center justify-center gap-2"
-                >
-                  <User className="w-4 h-4" />
-                  <span>Login / Sign Up</span>
                 </button>
               )}
             </div>

@@ -7,7 +7,6 @@ import { AuthModal } from '../components/AuthModal';
 import { ProductDetailModal } from '../components/ProductDetailModal';
 import { WorkshopInquiryModal } from '../components/WorkshopInquiryModal';
 import { MobileStickyCartBar } from '../components/MobileStickyCartBar';
-import { HelperChat } from '../components/HelperChat';
 import { MessageCircle } from 'lucide-react';
 import { CartItem, ModakProduct, StoreSettings } from '../types';
 
@@ -37,9 +36,6 @@ interface LayoutProps {
   isAuthOpen: boolean;
   onCloseAuth: () => void;
   onAuthenticated: () => void;
-  isHelperOpen: boolean;
-  onOpenHelper: () => void;
-  onCloseHelper: () => void;
   isBulkInquiryOpen: boolean;
   onCloseBulkInquiry: () => void;
   quickViewProduct: ModakProduct | null;
@@ -47,13 +43,12 @@ interface LayoutProps {
   onOpenCart: () => void;
   onOpenAuth: () => void;
   onExploreMenu: () => void;
-  onExploreWorkshops: () => void;
 }
 
 /**
  * Shared shell rendered around every route: sticky nav, footer, and all the
- * global overlays (cart drawer, auth, quick view, helper chat, WhatsApp
- * button). Route pages receive shared app state via useOutletContext().
+ * global overlays (cart drawer, auth, quick view, WhatsApp button). Route
+ * pages receive shared app state via useOutletContext().
  */
 export const Layout: React.FC<LayoutProps> = ({
   ctx,
@@ -62,9 +57,6 @@ export const Layout: React.FC<LayoutProps> = ({
   isAuthOpen,
   onCloseAuth,
   onAuthenticated,
-  isHelperOpen,
-  onOpenHelper,
-  onCloseHelper,
   isBulkInquiryOpen,
   onCloseBulkInquiry,
   quickViewProduct,
@@ -72,7 +64,6 @@ export const Layout: React.FC<LayoutProps> = ({
   onOpenCart,
   onOpenAuth,
   onExploreMenu,
-  onExploreWorkshops,
 }) => {
   const cleanPhone = (ctx.settings.whatsappNumber || '+917304472460').replace(/[^0-9]/g, '');
   const whatsAppUrl = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(
@@ -84,9 +75,7 @@ export const Layout: React.FC<LayoutProps> = ({
       <Navbar
         cart={ctx.cart}
         onOpenCart={onOpenCart}
-        onShopNowModaks={onExploreMenu}
         onOpenBulkInquiry={ctx.onOpenBulkInquiry}
-        onOpenHelper={onOpenHelper}
         onOpenAuth={onOpenAuth}
         language={ctx.language}
         onToggleLanguage={ctx.onToggleLanguage}
@@ -139,30 +128,20 @@ export const Layout: React.FC<LayoutProps> = ({
         language={ctx.language}
       />
 
-      <HelperChat
-        isOpen={isHelperOpen}
-        onOpen={onOpenHelper}
-        onClose={onCloseHelper}
-        onNavigateToWorkshops={onExploreWorkshops}
-        onNavigateToProducts={onExploreMenu}
-      />
-
-      {!isHelperOpen && (
-        <div className="fixed bottom-20 sm:bottom-24 right-3 sm:right-6 z-30 flex flex-col items-end gap-2">
-          <a
-            href={whatsAppUrl}
-            target="_blank"
-            rel="noreferrer"
-            className="p-2.5 sm:p-3 rounded-full bg-[#25D366] text-white shadow-xl hover:scale-110 active:scale-95 transition-all flex items-center gap-2 group"
-            aria-label="Chat on WhatsApp with 21 Kalya Modak Studio"
-          >
-            <MessageCircle className="w-4 h-4 sm:w-5 sm:h-5" />
-            <span className="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-300 whitespace-nowrap text-xs font-bold font-devanagari pr-1">
-              {ctx.language === 'mr' ? 'व्हॉट्सॲप' : 'WhatsApp'}
-            </span>
-          </a>
-        </div>
-      )}
+      <div className="fixed bottom-20 sm:bottom-24 right-3 sm:right-6 z-30 flex flex-col items-end gap-2">
+        <a
+          href={whatsAppUrl}
+          target="_blank"
+          rel="noreferrer"
+          className="p-2.5 sm:p-3 rounded-full bg-[#25D366] text-white shadow-xl hover:scale-110 active:scale-95 transition-all flex items-center gap-2 group"
+          aria-label="Chat on WhatsApp with 21 Kalya Modak Studio"
+        >
+          <MessageCircle className="w-4 h-4 sm:w-5 sm:h-5" />
+          <span className="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-300 whitespace-nowrap text-xs font-bold font-devanagari pr-1">
+            {ctx.language === 'mr' ? 'व्हॉट्सॲप' : 'WhatsApp'}
+          </span>
+        </a>
+      </div>
     </div>
   );
 };
