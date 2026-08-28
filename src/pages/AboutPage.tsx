@@ -55,7 +55,7 @@ export default function AboutPage() {
   return (
     <div className="w-full">
       {/* ── Hero ───────────────────────────────────────────────────── */}
-      <section className="relative bg-gradient-to-b from-[#134e48] to-[#0d3834] pt-16 pb-20 sm:pt-24 sm:pb-28 text-center overflow-hidden">
+      <section className="relative bg-[#134e48] pt-16 pb-20 sm:pt-24 sm:pb-28 text-center overflow-hidden">
         <div className="absolute inset-0 opacity-5 pointer-events-none bg-[radial-gradient(#E89A25_1px,transparent_1px)] [background-size:24px_24px]" />
         <div className="max-w-3xl mx-auto px-4 sm:px-6 relative z-10">
           <Reveal>
