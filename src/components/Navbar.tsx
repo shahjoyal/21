@@ -39,6 +39,26 @@ export const Navbar: React.FC<NavbarProps> = ({
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // The header uses `position: fixed` so it stays pinned to the top of the
+  // viewport no matter what (unlike `sticky`, which silently stops working
+  // if any ancestor has `overflow-x-hidden` — which our page shell does).
+  // Because `fixed` takes the header out of normal document flow, we track
+  // its rendered height and render a matching spacer right after it so the
+  // rest of the page doesn't jump underneath it — including when the
+  // header's own height changes between the scrolled/unscrolled states.
+  const headerRef = useRef<HTMLElement>(null);
+  const [headerHeight, setHeaderHeight] = useState(0);
+
+  useEffect(() => {
+    const node = headerRef.current;
+    if (!node) return;
+    const updateHeight = () => setHeaderHeight(node.offsetHeight);
+    updateHeight();
+    const resizeObserver = new ResizeObserver(updateHeight);
+    resizeObserver.observe(node);
+    return () => resizeObserver.disconnect();
+  }, []);
+
   const totalCartCount = cart.reduce((acc, item) => acc + item.quantity, 0);
   const totalCartValue = cart.reduce((acc, item) => acc + item.unitPrice * item.quantity, 0);
 
@@ -58,6 +78,7 @@ export const Navbar: React.FC<NavbarProps> = ({
     home: language === 'mr' ? 'मुख्यपृष्ठ' : 'Home',
     shop: language === 'mr' ? 'मोदक खरेदी करा' : 'Shop Modak',
     workshops: language === 'mr' ? 'कार्यशाळा बुक करा' : 'Book Workshop',
+    about: language === 'mr' ? 'आमच्याविषयी' : 'About Us',
     bulkInquiry: language === 'mr' ? 'कॉर्पोरेट कार्यशाळा नोंदणी' : 'Group & Corporate Booking',
     preOrderBtn: language === 'mr' ? 'मोदक बुक करा' : 'Order Modaks',
     langToggle: language === 'mr' ? 'English' : 'मराठी',
@@ -69,13 +90,15 @@ export const Navbar: React.FC<NavbarProps> = ({
     { label: t.home, path: '/' },
     { label: t.shop, path: '/shop' },
     { label: t.workshops, path: '/workshops' },
+    { label: t.about, path: '/about' },
   ];
 
   const isLinkActive = (path: string) =>
     path === '/' ? location.pathname === '/' : location.pathname.startsWith(path);
 
   return (
-    <header className="sticky top-0 z-40 w-full transition-all duration-300">
+    <>
+    <header ref={headerRef} className="fixed top-0 left-0 z-40 w-full transition-all duration-300">
       {/* Continuous scrolling promo strip — sits above the nav, inside the
           same sticky header, so it scrolls with the nav and never overlaps
           the rest of the page on desktop or mobile. */}
@@ -85,7 +108,7 @@ export const Navbar: React.FC<NavbarProps> = ({
       <nav
         className={`w-full transition-all duration-300 ${
           scrolled
-            ? 'bg-[#134e48]/95 backdrop-blur-md shadow-xl py-2.5 border-b border-[#E89A25]/20'
+            ? 'bg-white shadow-xl py-2.5 border-b border-[#E89A25]/30'
             : 'bg-[#134e48] py-3.5 border-b border-[#1A5E57]'
         }`}
       >
@@ -105,14 +128,22 @@ export const Navbar: React.FC<NavbarProps> = ({
             </div>
             <div className="flex flex-col">
               <div className="flex items-baseline gap-1.5">
-                <span className="font-black text-xl sm:text-2xl text-[#F8EDE0] tracking-tight sm:tracking-normal leading-none group-hover:text-[#EDA124] transition-colors font-devanagari">
+                <span
+                  className={`font-black text-xl sm:text-2xl tracking-tight sm:tracking-normal leading-none group-hover:text-[#EDA124] transition-colors font-devanagari ${
+                    scrolled ? 'text-[#134e48]' : 'text-[#F8EDE0]'
+                  }`}
+                >
                   {language === 'mr' ? '२१ कळ्या' : '21 Kalya'}
                 </span>
                 <span className="text-[10px] sm:text-xs font-bold text-[#EDA124] tracking-widest uppercase">
                   MODAK
                 </span>
               </div>
-              <span className="text-[10px] sm:text-xs font-semibold tracking-widest text-[#F8EDE0]/90 uppercase mt-0.5 font-devanagari-body">
+              <span
+                className={`text-[10px] sm:text-xs font-semibold tracking-widest uppercase mt-0.5 font-devanagari-body transition-colors ${
+                  scrolled ? 'text-[#134e48]/80' : 'text-[#F8EDE0]/90'
+                }`}
+              >
                 — स्वादः परमानन्दः —
               </span>
             </div>
@@ -130,6 +161,8 @@ export const Navbar: React.FC<NavbarProps> = ({
                   className={`px-3.5 py-2 rounded-full text-sm font-medium transition-all cursor-pointer ${
                     active
                       ? 'bg-[#E89A25]/15 text-[#E89A25] border border-[#E89A25]/40 hover:bg-[#E89A25] hover:text-[#134e48] font-semibold'
+                      : scrolled
+                      ? 'text-[#134e48]/80 hover:text-[#134e48] hover:bg-black/5'
                       : 'text-[#F5EEDB]/90 hover:text-white hover:bg-white/10'
                   }`}
                 >
@@ -144,13 +177,23 @@ export const Navbar: React.FC<NavbarProps> = ({
             {/* Account: Login / Logout */}
             {user ? (
               <div className="hidden sm:flex items-center gap-1.5">
-                <span className="px-2.5 py-1 rounded-lg bg-white/10 text-[#F5EEDB] border border-white/10 text-xs font-bold flex items-center gap-1.5">
+                <span
+                  className={`px-2.5 py-1 rounded-lg text-xs font-bold flex items-center gap-1.5 transition-colors ${
+                    scrolled
+                      ? 'bg-[#134e48]/10 text-[#134e48] border border-[#134e48]/10'
+                      : 'bg-white/10 text-[#F5EEDB] border border-white/10'
+                  }`}
+                >
                   <User className="w-3.5 h-3.5 text-[#EDA124]" />
                   {user.name.split(' ')[0]}
                 </span>
                 <button
                   onClick={logout}
-                  className="p-2 rounded-lg bg-white/10 hover:bg-white/20 text-[#F5EEDB] border border-white/10 transition-colors"
+                  className={`p-2 rounded-lg transition-colors ${
+                    scrolled
+                      ? 'bg-[#134e48]/10 hover:bg-[#134e48]/20 text-[#134e48] border border-[#134e48]/10'
+                      : 'bg-white/10 hover:bg-white/20 text-[#F5EEDB] border border-white/10'
+                  }`}
                   title="Logout"
                 >
                   <LogOut className="w-4 h-4" />
@@ -170,7 +213,11 @@ export const Navbar: React.FC<NavbarProps> = ({
             {/* Language Switcher (desktop/tablet only — moved into the mobile dropdown below) */}
             <button
               onClick={onToggleLanguage}
-              className="hidden sm:flex px-2.5 py-1 rounded-lg bg-black/25 text-[#F5EEDB] hover:text-[#E89A25] border border-white/10 hover:border-[#E89A25]/40 text-xs font-bold transition-colors items-center gap-1"
+              className={`hidden sm:flex px-2.5 py-1 rounded-lg hover:text-[#E89A25] text-xs font-bold transition-colors items-center gap-1 ${
+                scrolled
+                  ? 'bg-[#134e48]/10 text-[#134e48] border border-[#134e48]/10 hover:border-[#E89A25]/40'
+                  : 'bg-black/25 text-[#F5EEDB] border border-white/10 hover:border-[#E89A25]/40'
+              }`}
               title="Switch Language"
             >
               <span className="w-2 h-2 rounded-full bg-[#E89A25]" />
@@ -183,7 +230,11 @@ export const Navbar: React.FC<NavbarProps> = ({
               onClick={onOpenCart}
               animate={cartBump ? { scale: [1, 1.18, 1] } : { scale: 1 }}
               transition={{ duration: 0.42, ease: 'easeInOut' }}
-              className="relative p-2.5 rounded-full bg-white/10 hover:bg-white/20 text-[#F5EEDB] border border-[#E89A25]/30 transition-colors flex items-center justify-center group active:scale-95 cursor-pointer"
+              className={`relative p-2.5 rounded-full border border-[#E89A25]/30 transition-colors flex items-center justify-center group active:scale-95 cursor-pointer ${
+                scrolled
+                  ? 'bg-[#134e48]/10 hover:bg-[#134e48]/20 text-[#134e48]'
+                  : 'bg-white/10 hover:bg-white/20 text-[#F5EEDB]'
+              }`}
               aria-label="View Shopping Cart"
             >
               <ShoppingBag className="w-5 h-5 text-[#E89A25] group-hover:scale-110 transition-transform" />
@@ -206,7 +257,9 @@ export const Navbar: React.FC<NavbarProps> = ({
             {/* Mobile Menu Button */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-2 rounded-lg text-[#F5EEDB] hover:bg-white/10 transition-colors"
+              className={`lg:hidden p-2 rounded-lg transition-colors ${
+                scrolled ? 'text-[#134e48] hover:bg-black/5' : 'text-[#F5EEDB] hover:bg-white/10'
+              }`}
               aria-label="Toggle Navigation Menu"
             >
               {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -283,5 +336,9 @@ export const Navbar: React.FC<NavbarProps> = ({
         )}
       </nav>
     </header>
+    {/* Spacer: reserves the header's height in normal document flow so
+        page content starts right below it instead of sliding underneath. */}
+    <div style={{ height: headerHeight }} aria-hidden="true" />
+    </>
   );
 };

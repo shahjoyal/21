@@ -4,6 +4,7 @@ import { Hero } from '../components/Hero';
 import { WhyChooseUs } from '../components/WhyChooseUs';
 import { FounderStory } from '../components/FounderStory';
 import { HeritageCraftStory } from '../components/HeritageCraftStory';
+import { MakingProcess } from '../components/MakingProcess';
 import { Testimonials } from '../components/Testimonials';
 import { OutletContextType } from './Layout';
 
@@ -40,6 +41,8 @@ export default function HomePage() {
       <WhyChooseUs language={ctx.language} />
 
       <HeritageCraftStory language={ctx.language} />
+
+      <MakingProcess language={ctx.language} />
 
       <FounderStory language={ctx.language} />
 

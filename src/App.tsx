@@ -10,6 +10,7 @@ import HomePage from './pages/HomePage';
 import ShopPage from './pages/ShopPage';
 import WorkshopsPage from './pages/WorkshopsPage';
 import CheckoutPage from './pages/CheckoutPage';
+import AboutPage from './pages/AboutPage';
 
 const INITIAL_SETTINGS: StoreSettings = {
   storeName: '21 Kalya Modak & Culinary Studio',
@@ -198,6 +199,7 @@ function AppShell() {
         <Route index element={<HomePage />} />
         <Route path="shop" element={<ShopPage />} />
         <Route path="workshops" element={<WorkshopsPage />} />
+        <Route path="about" element={<AboutPage />} />
         <Route path="checkout" element={<CheckoutPage />} />
       </Route>
     </Routes>
