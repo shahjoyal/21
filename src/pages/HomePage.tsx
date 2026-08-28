@@ -39,9 +39,9 @@ export default function HomePage() {
 
       <WhyChooseUs language={ctx.language} />
 
-      <FounderStory language={ctx.language} />
-
       <HeritageCraftStory language={ctx.language} />
+
+      <FounderStory language={ctx.language} />
 
       <Testimonials language={ctx.language} />
     </>
