@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useLocation, useNavigate, useOutletContext } from 'react-router-dom';
 import { Hero } from '../components/Hero';
+import { SignatureCollectionCarousel } from '../components/SignatureCollectionCarousel';
 import { WhyChooseUs } from '../components/WhyChooseUs';
 import { FounderStory } from '../components/FounderStory';
 import { HeritageCraftStory } from '../components/HeritageCraftStory';
@@ -37,6 +38,8 @@ export default function HomePage() {
         onOpenWorkshops={() => navigate('/workshops')}
         language={ctx.language}
       />
+
+      <SignatureCollectionCarousel language={ctx.language} />
 
       <WhyChooseUs language={ctx.language} />
 
