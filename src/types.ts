@@ -62,6 +62,10 @@ export interface WorkshopSession {
   id: string;
   title: string;
   marathiTitle: string;
+  // Which carousel section this session card appears under on the Workshops page.
+  // 'type3' is a placeholder bucket for a future session format — rename the
+  // section label in WorkshopCalendar.tsx and reassign this field when ready.
+  mode: 'online' | 'offline' | 'type3';
   level: 'Beginner' | 'Masterclass' | 'Chef Intensive' | 'Family & Kids';
   date: string;
   day: string;

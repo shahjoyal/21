@@ -221,6 +221,7 @@ export const WORKSHOP_SESSIONS: WorkshopSession[] = [
     id: 'ws-signature-21',
     title: 'The 21-Fold Masterclass: Authentic Ukadiche Modak',
     marathiTitle: 'अचूक २१ कळ्यांची उकडीचे मोदक कार्यशाळा (मास्टरक्लास)',
+    mode: 'offline',
     level: 'Masterclass',
     date: 'Upcoming Saturday & Sunday',
     day: 'Weekend Intensive',
@@ -254,6 +255,7 @@ export const WORKSHOP_SESSIONS: WorkshopSession[] = [
     id: 'ws-gourmet-fusion',
     title: 'Gourmet Fusion & Royal Khoya Modak Workshop',
     marathiTitle: 'रॉयल खवा व फ्युजन मोदक मेकिंग कार्यशाळा',
+    mode: 'online',
     level: 'Beginner',
     date: 'Every Wednesday & Friday',
     day: 'Weekday Evening',
@@ -287,6 +289,7 @@ export const WORKSHOP_SESSIONS: WorkshopSession[] = [
     id: 'ws-kids-family',
     title: 'Kids & Family Modak Art & Sculpting Studio',
     marathiTitle: 'मुले व पालकांसाठी मोदक कला कार्यशाळा',
+    mode: 'offline',
     level: 'Family & Kids',
     date: 'Every Sunday Morning',
     day: 'Sunday Special',
@@ -320,6 +323,7 @@ export const WORKSHOP_SESSIONS: WorkshopSession[] = [
     id: 'ws-chef-intensive',
     title: 'Advanced Chef Intensive: Commercial 21-Fold Mastery',
     marathiTitle: 'व्यावसायिक शेफ व उद्योजकांसाठी प्रगत कार्यशाळा',
+    mode: 'online',
     level: 'Chef Intensive',
     date: 'Monthly 2-Day Masterclass',
     day: '2-Day Bootcamp',
@@ -348,6 +352,57 @@ export const WORKSHOP_SESSIONS: WorkshopSession[] = [
     includesKit: true,
     urgency: 'medium',
     image: craftImg
+  },
+
+  // --- "Type 3" placeholder cards -------------------------------------
+  // Temporary entries for the third carousel section on the Workshops page.
+  // Swap in the real session name/details when this format is finalized —
+  // everything else (image, pricing, syllabus, etc.) works exactly like the
+  // Online/Offline cards above. Add more objects with mode: 'type3' anytime;
+  // the carousel scales automatically.
+  {
+    id: 'ws-type3-placeholder-1',
+    title: 'Type 3 Session (Name Coming Soon)',
+    marathiTitle: 'टाईप ३ सत्र (नाव लवकरच)',
+    mode: 'type3',
+    level: 'Beginner',
+    date: 'To Be Announced',
+    day: 'TBA',
+    timeRange: 'TBA',
+    duration: 'TBA',
+    location: 'TBA',
+    instructor: 'TBA',
+    pricePerSeat: 799,
+    totalSeats: 20,
+    bookedSeats: 0,
+    description: 'Placeholder card for the upcoming Type 3 session format. Update the title, schedule and details here once finalized.',
+    highlights: ['Details coming soon'],
+    syllabus: ['Details coming soon'],
+    includesKit: true,
+    urgency: 'normal',
+    image: craftImg
+  },
+  {
+    id: 'ws-type3-placeholder-2',
+    title: 'Type 3 Session (Name Coming Soon)',
+    marathiTitle: 'टाईप ३ सत्र (नाव लवकरच)',
+    mode: 'type3',
+    level: 'Beginner',
+    date: 'To Be Announced',
+    day: 'TBA',
+    timeRange: 'TBA',
+    duration: 'TBA',
+    location: 'TBA',
+    instructor: 'TBA',
+    pricePerSeat: 799,
+    totalSeats: 20,
+    bookedSeats: 0,
+    description: 'Placeholder card for the upcoming Type 3 session format. Update the title, schedule and details here once finalized.',
+    highlights: ['Details coming soon'],
+    syllabus: ['Details coming soon'],
+    includesKit: true,
+    urgency: 'normal',
+    image: assortedBoxImg
   }
 ];
 
