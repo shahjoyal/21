@@ -55,6 +55,21 @@ export const SignatureCollectionCarousel: React.FC<SignatureCollectionCarouselPr
   const autoPlayTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const isAutoPlayingRef = useRef(true);
 
+  // Fade the strip out, jump instantly to the target scroll position while
+  // hidden, then fade back in — used only for the wraparound (last → first)
+  // jump so the visitor never sees it slide back past all the other cards.
+  const fadeToScrollPosition = (el: HTMLDivElement, left: number) => {
+    el.style.transition = 'opacity 180ms ease';
+    el.style.opacity = '0';
+    window.setTimeout(() => {
+      el.scrollTo({ left, behavior: 'auto' });
+      // Force the jump to apply before we fade back in.
+      requestAnimationFrame(() => {
+        el.style.opacity = '1';
+      });
+    }, 180);
+  };
+
   const scrollByCard = (direction: 'left' | 'right') => {
     const el = scrollerRef.current;
     if (!el) return;
@@ -62,13 +77,15 @@ export const SignatureCollectionCarousel: React.FC<SignatureCollectionCarouselPr
     const step = card ? card.offsetWidth + 20 : 260;
     const maxScroll = el.scrollWidth - el.clientWidth;
 
-    // Loop around at either end instead of stopping dead.
+    // Loop around at either end instead of stopping dead — via a fade
+    // rather than a smooth scroll, so the jump doesn't visibly sweep
+    // across every card in between.
     if (direction === 'right' && el.scrollLeft >= maxScroll - 10) {
-      el.scrollTo({ left: 0, behavior: 'smooth' });
+      fadeToScrollPosition(el, 0);
       return;
     }
     if (direction === 'left' && el.scrollLeft <= 10) {
-      el.scrollTo({ left: maxScroll, behavior: 'smooth' });
+      fadeToScrollPosition(el, maxScroll);
       return;
     }
     el.scrollBy({ left: direction === 'left' ? -step : step, behavior: 'smooth' });
