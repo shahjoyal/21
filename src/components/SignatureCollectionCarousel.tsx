@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Star, ShoppingBag, ChevronRight } from 'lucide-react';
+import { Star, ShoppingBag, ChevronRight, ChevronLeft } from 'lucide-react';
 import { motion } from 'motion/react';
 import { PRODUCTS } from '../data/products';
 import { ModakProduct } from '../types';
@@ -46,6 +46,71 @@ export const SignatureCollectionCarousel: React.FC<SignatureCollectionCarouselPr
     navigate('/shop');
   };
 
+  // --- Mobile carousel: horizontal scroll, auto-plays left → right, loops
+  //     back to the start, and stops for good the moment the visitor takes
+  //     manual control (arrow tap or a swipe) — resumes only on a fresh
+  //     page load. Desktop (md+) still shows all 4 cards in a static grid,
+  //     so none of this runs there.
+  const scrollerRef = useRef<HTMLDivElement>(null);
+  const autoPlayTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const isAutoPlayingRef = useRef(true);
+
+  const scrollByCard = (direction: 'left' | 'right') => {
+    const el = scrollerRef.current;
+    if (!el) return;
+    const card = el.querySelector<HTMLElement>('[data-signature-card]');
+    const step = card ? card.offsetWidth + 20 : 260;
+    const maxScroll = el.scrollWidth - el.clientWidth;
+
+    // Loop around at either end instead of stopping dead.
+    if (direction === 'right' && el.scrollLeft >= maxScroll - 10) {
+      el.scrollTo({ left: 0, behavior: 'smooth' });
+      return;
+    }
+    if (direction === 'left' && el.scrollLeft <= 10) {
+      el.scrollTo({ left: maxScroll, behavior: 'smooth' });
+      return;
+    }
+    el.scrollBy({ left: direction === 'left' ? -step : step, behavior: 'smooth' });
+  };
+
+  const stopAutoPlay = () => {
+    isAutoPlayingRef.current = false;
+    if (autoPlayTimerRef.current) {
+      clearInterval(autoPlayTimerRef.current);
+      autoPlayTimerRef.current = null;
+    }
+  };
+
+  const handleArrowClick = (direction: 'left' | 'right') => {
+    stopAutoPlay();
+    scrollByCard(direction);
+  };
+
+  useEffect(() => {
+    const prefersReducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) return;
+
+    autoPlayTimerRef.current = setInterval(() => {
+      if (isAutoPlayingRef.current) {
+        scrollByCard('right');
+      }
+    }, 3200);
+
+    // A manual swipe/drag on the strip should also permanently stop
+    // autoplay, same as tapping an arrow — otherwise the two fight.
+    const el = scrollerRef.current;
+    el?.addEventListener('touchstart', stopAutoPlay, { passive: true, once: true });
+    el?.addEventListener('pointerdown', stopAutoPlay, { once: true });
+
+    return () => {
+      if (autoPlayTimerRef.current) clearInterval(autoPlayTimerRef.current);
+      el?.removeEventListener('touchstart', stopAutoPlay);
+      el?.removeEventListener('pointerdown', stopAutoPlay);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const getBadge = (product: ModakProduct) => {
     if (product.isSignature21Kalya) {
       return { label: isMarathi ? 'सिग्नेचर' : 'Signature', className: 'bg-[#134e48] text-[#F3D48A]' };
@@ -83,8 +148,37 @@ export const SignatureCollectionCarousel: React.FC<SignatureCollectionCarouselPr
           </p>
         </Reveal>
 
-        {/* Centered 4-card showcase */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-5 sm:gap-7 justify-items-center max-w-5xl mx-auto">
+        {/* Mobile: auto-playing horizontal carousel, one full-width card at a
+            time, with fixed arrows overlaid on top so they stay put while
+            cards scroll beneath them — centered on the card every time.
+            Desktop (md+): static centered 4-card grid, unchanged. */}
+        <div className="relative max-w-5xl mx-auto">
+
+          {/* Prev / Next — fixed over the carousel (don't scroll with the
+              cards), mobile & tablet only; desktop grid shows all 4 cards
+              at once so no arrows are needed there. Vertically aligned to
+              the middle of the (square) product image. */}
+          <button
+            type="button"
+            onClick={() => handleArrowClick('left')}
+            aria-label={isMarathi ? 'मागील' : 'Previous'}
+            className="md:hidden flex absolute left-3 sm:left-[calc(50%-160px)] top-[30%] -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-white/90 backdrop-blur-sm shadow-md items-center justify-center text-[#134e48] active:bg-[#134e48] active:text-white transition-colors"
+          >
+            <ChevronLeft className="w-5 h-5" />
+          </button>
+          <button
+            type="button"
+            onClick={() => handleArrowClick('right')}
+            aria-label={isMarathi ? 'पुढील' : 'Next'}
+            className="md:hidden flex absolute right-3 sm:right-[calc(50%-160px)] top-[30%] -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-white/90 backdrop-blur-sm shadow-md items-center justify-center text-[#134e48] active:bg-[#134e48] active:text-white transition-colors"
+          >
+            <ChevronRight className="w-5 h-5" />
+          </button>
+
+          <div
+            ref={scrollerRef}
+            className="flex md:grid md:grid-cols-4 gap-5 sm:gap-7 md:justify-items-center overflow-x-auto md:overflow-visible snap-x snap-mandatory md:snap-none scroll-smooth [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          >
           {featuredProducts.map((product, index) => {
             const badge = getBadge(product);
             const roundedRating = Math.round(product.rating);
@@ -92,6 +186,7 @@ export const SignatureCollectionCarousel: React.FC<SignatureCollectionCarouselPr
             return (
               <motion.div
                 key={product.id}
+                data-signature-card
                 custom={index}
                 variants={cardRevealVariants}
                 initial="hidden"
@@ -104,7 +199,7 @@ export const SignatureCollectionCarousel: React.FC<SignatureCollectionCarouselPr
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' || e.key === ' ') goToShop();
                 }}
-                className="w-full max-w-[270px] bg-white rounded-2xl overflow-hidden group relative cursor-pointer transition-shadow duration-500 shadow-[0_1px_2px_rgba(19,78,72,0.06),0_1px_10px_rgba(19,78,72,0.05)] hover:shadow-[0_20px_45px_-16px_rgba(19,78,72,0.35)] ring-1 ring-black/[0.06] hover:ring-[#E89A25]/50"
+                className="shrink-0 snap-center w-full sm:max-w-[320px] mx-auto md:w-full md:mx-0 md:shrink md:snap-align-none md:max-w-[270px] bg-white rounded-2xl overflow-hidden group relative cursor-pointer transition-shadow duration-500 shadow-[0_1px_2px_rgba(19,78,72,0.06),0_1px_10px_rgba(19,78,72,0.05)] hover:shadow-[0_20px_45px_-16px_rgba(19,78,72,0.35)] ring-1 ring-black/[0.06] hover:ring-[#E89A25]/50"
               >
                 {/* Image */}
                 <div className="relative aspect-square w-full overflow-hidden bg-stone-100">
@@ -162,6 +257,7 @@ export const SignatureCollectionCarousel: React.FC<SignatureCollectionCarouselPr
               </motion.div>
             );
           })}
+          </div>
         </div>
 
         {/* View Full Menu link */}
