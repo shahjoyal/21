@@ -149,7 +149,7 @@ export const SignatureCollectionCarousel: React.FC<SignatureCollectionCarouselPr
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 w-full max-w-full">
 
         {/* Section Header */}
-        <Reveal className="text-center max-w-2xl mx-auto mb-8 sm:mb-10 space-y-2">
+        <Reveal className="text-center max-w-2xl mx-auto mb-6 sm:mb-10 space-y-2">
           <span className="text-[11px] sm:text-xs font-bold uppercase tracking-[0.2em] text-[#E89A25]">
             {isMarathi ? 'सिग्नेचर संकलन' : 'Signature Collection'}
           </span>
@@ -165,36 +165,40 @@ export const SignatureCollectionCarousel: React.FC<SignatureCollectionCarouselPr
           </p>
         </Reveal>
 
-        {/* Mobile: auto-playing horizontal carousel, one full-width card at a
-            time, with fixed arrows overlaid on top so they stay put while
-            cards scroll beneath them — centered on the card every time.
+        {/* Mobile: auto-playing horizontal carousel, one card centered at a
+            time with slivers of its neighbors peeking on each side — the
+            container's own side padding creates that peek AND keeps the
+            first/last card properly centered (percentage margins on the
+            cards themselves don't center reliably inside a scrollable
+            flex row, so the gutter lives on the container instead).
             Desktop (md+): static centered 4-card grid, unchanged. */}
-        <div className="relative max-w-5xl mx-auto">
+        <div className="max-w-5xl mx-auto">
 
-          {/* Prev / Next — fixed over the carousel (don't scroll with the
-              cards), mobile & tablet only; desktop grid shows all 4 cards
-              at once so no arrows are needed there. Vertically aligned to
-              the middle of the (square) product image. */}
-          <button
-            type="button"
-            onClick={() => handleArrowClick('left')}
-            aria-label={isMarathi ? 'मागील' : 'Previous'}
-            className="md:hidden flex absolute left-3 sm:left-[calc(50%-160px)] top-[30%] -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-white/90 backdrop-blur-sm shadow-md items-center justify-center text-[#134e48] active:bg-[#134e48] active:text-white transition-colors"
-          >
-            <ChevronLeft className="w-5 h-5" />
-          </button>
-          <button
-            type="button"
-            onClick={() => handleArrowClick('right')}
-            aria-label={isMarathi ? 'पुढील' : 'Next'}
-            className="md:hidden flex absolute right-3 sm:right-[calc(50%-160px)] top-[30%] -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-white/90 backdrop-blur-sm shadow-md items-center justify-center text-[#134e48] active:bg-[#134e48] active:text-white transition-colors"
-          >
-            <ChevronRight className="w-5 h-5" />
-          </button>
+          {/* Prev / Next — sit above the carousel, top-right corner, clear
+              of the card itself. Mobile & tablet only; desktop grid shows
+              all 4 cards at once so no arrows are needed there. */}
+          <div className="md:hidden flex items-center justify-end gap-2 mb-3 pr-1">
+            <button
+              type="button"
+              onClick={() => handleArrowClick('left')}
+              aria-label={isMarathi ? 'मागील' : 'Previous'}
+              className="w-8 h-8 rounded-full bg-white border border-[#E89A25]/40 shadow-sm flex items-center justify-center text-[#134e48] active:bg-[#134e48] active:text-white transition-colors"
+            >
+              <ChevronLeft className="w-4 h-4" />
+            </button>
+            <button
+              type="button"
+              onClick={() => handleArrowClick('right')}
+              aria-label={isMarathi ? 'पुढील' : 'Next'}
+              className="w-8 h-8 rounded-full bg-white border border-[#E89A25]/40 shadow-sm flex items-center justify-center text-[#134e48] active:bg-[#134e48] active:text-white transition-colors"
+            >
+              <ChevronRight className="w-4 h-4" />
+            </button>
+          </div>
 
           <div
             ref={scrollerRef}
-            className="flex md:grid md:grid-cols-4 gap-5 sm:gap-7 md:justify-items-center overflow-x-auto md:overflow-visible snap-x snap-mandatory md:snap-none scroll-smooth [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+            className="flex md:grid md:grid-cols-4 gap-4 sm:gap-7 md:justify-items-center overflow-x-auto md:overflow-visible snap-x snap-mandatory md:snap-none scroll-smooth px-[18%] md:px-0 scroll-px-[18%] md:scroll-px-0 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
           >
           {featuredProducts.map((product, index) => {
             const badge = getBadge(product);
@@ -216,7 +220,7 @@ export const SignatureCollectionCarousel: React.FC<SignatureCollectionCarouselPr
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' || e.key === ' ') goToShop();
                 }}
-                className="shrink-0 snap-center w-full sm:max-w-[320px] mx-auto md:w-full md:mx-0 md:shrink md:snap-align-none md:max-w-[270px] bg-white rounded-2xl overflow-hidden group relative cursor-pointer transition-shadow duration-500 shadow-[0_1px_2px_rgba(19,78,72,0.06),0_1px_10px_rgba(19,78,72,0.05)] hover:shadow-[0_20px_45px_-16px_rgba(19,78,72,0.35)] ring-1 ring-black/[0.06] hover:ring-[#E89A25]/50"
+                className="shrink-0 snap-center w-full md:w-full md:shrink md:snap-align-none md:max-w-[270px] bg-white rounded-2xl overflow-hidden group relative cursor-pointer transition-shadow duration-500 shadow-[0_1px_2px_rgba(19,78,72,0.06),0_1px_10px_rgba(19,78,72,0.05)] hover:shadow-[0_20px_45px_-16px_rgba(19,78,72,0.35)] ring-1 ring-black/[0.06] hover:ring-[#E89A25]/50"
               >
                 {/* Image */}
                 <div className="relative aspect-square w-full overflow-hidden bg-stone-100">
@@ -278,7 +282,7 @@ export const SignatureCollectionCarousel: React.FC<SignatureCollectionCarouselPr
         </div>
 
         {/* View Full Menu link */}
-        <div className="text-center mt-8 sm:mt-10">
+        <div className="text-center mt-6 sm:mt-10">
           <button
             type="button"
             onClick={() => goToShop()}
