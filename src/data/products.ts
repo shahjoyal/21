@@ -353,8 +353,139 @@ export const WORKSHOP_SESSIONS: WorkshopSession[] = [
     urgency: 'medium',
     image: craftImg
   },
+  {
+    id: 'ws-online-live-basics',
+    title: 'Live Online: Modak Basics from Your Kitchen',
+    marathiTitle: 'ऑनलाइन थेट सत्र: घरच्या स्वयंपाकघरातून मोदक शिका',
+    mode: 'online',
+    level: 'Beginner',
+    date: 'Every Tuesday',
+    day: 'Weekday Evening',
+    timeRange: '6:00 PM – 7:30 PM',
+    duration: '1.5 Hours',
+    location: 'Live Video Call (Zoom / Google Meet)',
+    instructor: 'Chef Ananya & Team',
+    pricePerSeat: 449,
+    originalPrice: 650,
+    totalSeats: 40,
+    bookedSeats: 22,
+    description: 'A beginner-friendly live video session you can join from anywhere. We mail you a pre-measured ingredient kit in advance so you can pleat, steam and taste along with the chef in real time.',
+    highlights: [
+      'Pre-measured ingredient kit shipped to your door',
+      'Live Q&A with the chef throughout the session',
+      'Recording access for 7 days after the class',
+      'Digital recipe card & certificate of participation'
+    ],
+    syllabus: [
+      'Getting your dough consistency right over video guidance',
+      'Simplified 11-pleat technique for beginners',
+      'Steaming without a traditional modak mould',
+      'Troubleshooting common first-timer mistakes live'
+    ],
+    includesKit: true,
+    urgency: 'medium',
+    image: ukadicheImg
+  },
+  {
+    id: 'ws-online-nri-masterclass',
+    title: 'Global NRI Masterclass: Modaks Anywhere in the World',
+    marathiTitle: 'जागतिक एनआरआय मास्टरक्लास: जगात कुठूनही मोदक शिका',
+    mode: 'online',
+    level: 'Masterclass',
+    date: 'First Sunday of Every Month',
+    day: 'Sunday Special',
+    timeRange: '8:00 PM – 9:30 PM IST',
+    duration: '1.5 Hours',
+    location: 'Live Video Call (Global Time Zones)',
+    instructor: 'Executive Chef Vasant Deshmukh (35+ Yrs Master Halwai)',
+    pricePerSeat: 999,
+    originalPrice: 1450,
+    totalSeats: 35,
+    bookedSeats: 9,
+    description: 'Designed for Indians abroad who miss home-style modaks. Learn substitutes for hard-to-find ingredients and the full 21-pleat technique, taught live from our Pune studio.',
+    highlights: [
+      'Ingredient substitution guide for international kitchens',
+      'Live demonstration of the full 21-pleat technique',
+      'Downloadable PDF recipe pack in English & Marathi',
+      'Certificate of participation emailed after the session'
+    ],
+    syllabus: [
+      'Sourcing coconut, jaggery & rice flour substitutes abroad',
+      'Adapting steaming setups without a traditional modak patra',
+      'The 21-Pleat Technique explained step by step over video',
+      'Storage tips for enjoying modaks the next day'
+    ],
+    includesKit: false,
+    urgency: 'normal',
+    image: assortedBoxImg
+  },
+  {
+    id: 'ws-offline-couples-date',
+    title: 'Couples & Date-Night Modak Making Studio',
+    marathiTitle: 'जोडप्यांसाठी मोदक मेकिंग डेट-नाईट कार्यशाळा',
+    mode: 'offline',
+    level: 'Beginner',
+    date: 'Every Friday & Saturday Evening',
+    day: 'Weekend Evening',
+    timeRange: '7:00 PM – 9:00 PM',
+    duration: '2 Hours',
+    location: '21 Kalya Culinary Studio (Pune / Mumbai)',
+    instructor: 'Pastry Chef Sneha Kulkarni',
+    pricePerSeat: 1299,
+    originalPrice: 1799,
+    totalSeats: 16,
+    bookedSeats: 12,
+    description: 'A fun, relaxed studio session for couples and friends to pleat modaks side by side, with soft music, chai and a shared tasting board to finish the evening.',
+    highlights: [
+      'Shared workstation for two with all ingredients included',
+      'Complimentary masala chai & tasting board',
+      'Take home a shared box of 14 handmade modaks',
+      'Instant photo memento from the studio'
+    ],
+    syllabus: [
+      'Warm-up: kneading and shaping dough together',
+      'The 21-Pleat Technique, paired practice rounds',
+      'Steaming and plating your shared batch',
+      'Tasting & tea time to wrap up the evening'
+    ],
+    includesKit: true,
+    urgency: 'medium',
+    image: heroImg
+  },
+  {
+    id: 'ws-offline-corporate-teambuilding',
+    title: 'Corporate Team-Building Modak Workshop',
+    marathiTitle: 'कॉर्पोरेट टीम-बिल्डिंग मोदक कार्यशाळा',
+    mode: 'offline',
+    level: 'Chef Intensive',
+    date: 'By Appointment, Weekdays',
+    day: 'Weekday Booking',
+    timeRange: '3:00 PM – 5:30 PM',
+    duration: '2.5 Hours',
+    location: 'Pune Central Culinary Academy',
+    instructor: 'Master Halwai Vasant Deshmukh & Culinary Director',
+    pricePerSeat: 1499,
+    originalPrice: 2100,
+    totalSeats: 25,
+    bookedSeats: 7,
+    description: 'A hands-on team outing built around friendly modak-pleating competitions, judged tasting rounds, and a shared takeaway box for every teammate.',
+    highlights: [
+      'Team-vs-team pleating competition with judged rounds',
+      'Dedicated event host & customized team scoreboard',
+      'Individual take-home boxes for every participant',
+      'Group photo and certificate for the winning team'
+    ],
+    syllabus: [
+      'Icebreaker: dough kneading relay in small teams',
+      'The 21-Pleat Technique, taught round by round',
+      'Timed pleating competition with chef judging',
+      'Steaming, plating and the closing tasting ceremony'
+    ],
+    includesKit: true,
+    urgency: 'normal',
+    image: craftImg
+  },
 
-  // --- "Type 3" placeholder cards -------------------------------------
   // Temporary entries for the third carousel section on the Workshops page.
   // Swap in the real session name/details when this format is finalized —
   // everything else (image, pricing, syllabus, etc.) works exactly like the
@@ -403,6 +534,50 @@ export const WORKSHOP_SESSIONS: WorkshopSession[] = [
     includesKit: true,
     urgency: 'normal',
     image: assortedBoxImg
+  },
+  {
+    id: 'ws-type3-placeholder-3',
+    title: 'Type 3 Session (Name Coming Soon)',
+    marathiTitle: 'टाईप ३ सत्र (नाव लवकरच)',
+    mode: 'type3',
+    level: 'Beginner',
+    date: 'To Be Announced',
+    day: 'TBA',
+    timeRange: 'TBA',
+    duration: 'TBA',
+    location: 'TBA',
+    instructor: 'TBA',
+    pricePerSeat: 799,
+    totalSeats: 20,
+    bookedSeats: 0,
+    description: 'Placeholder card for the upcoming Type 3 session format. Update the title, schedule and details here once finalized.',
+    highlights: ['Details coming soon'],
+    syllabus: ['Details coming soon'],
+    includesKit: true,
+    urgency: 'normal',
+    image: heroImg
+  },
+  {
+    id: 'ws-type3-placeholder-4',
+    title: 'Type 3 Session (Name Coming Soon)',
+    marathiTitle: 'टाईप ३ सत्र (नाव लवकरच)',
+    mode: 'type3',
+    level: 'Beginner',
+    date: 'To Be Announced',
+    day: 'TBA',
+    timeRange: 'TBA',
+    duration: 'TBA',
+    location: 'TBA',
+    instructor: 'TBA',
+    pricePerSeat: 799,
+    totalSeats: 20,
+    bookedSeats: 0,
+    description: 'Placeholder card for the upcoming Type 3 session format. Update the title, schedule and details here once finalized.',
+    highlights: ['Details coming soon'],
+    syllabus: ['Details coming soon'],
+    includesKit: true,
+    urgency: 'normal',
+    image: ukadicheImg
   }
 ];
 
