@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { CartItem } from '../types';
-import { DELIVERY_SLOTS } from '../data/products';
 import {
   X,
   Trash2,
@@ -9,8 +8,6 @@ import {
   ShoppingBag,
   ArrowRight,
   ShieldCheck,
-  Gift,
-  Clock,
   Sparkles,
   MessageCircle,
   Check,
@@ -45,7 +42,6 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
   language,
 }) => {
   const isMarathi = language === 'mr';
-  const [addComplimentaryGhee, setAddComplimentaryGhee] = useState(true);
 
   if (!isOpen) return null;
 
@@ -244,74 +240,6 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
                   ))}
                 </div>
 
-                {/* Delivery Date & Fresh Batch Slot Picker */}
-                <div className="bg-white p-4 rounded-2xl border border-gray-200 space-y-3">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-1.5 text-xs font-bold text-[#134e48]">
-                      <Clock className="w-4 h-4 text-[#E89A25]" />
-                      <span>{isMarathi ? 'डिलिव्हरी तारीख व स्लॉट' : 'Delivery Date & Time Slot'}</span>
-                    </div>
-                    <span className="text-[10px] text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded-full">
-                      {isMarathi ? 'ताजी वाफ' : 'Fresh Steam'}
-                    </span>
-                  </div>
-
-                  <div className="space-y-2">
-                    <input
-                      type="date"
-                      value={deliveryDate}
-                      onChange={(e) => onChangeDeliveryDate(e.target.value)}
-                      className="w-full text-xs p-2.5 rounded-xl border border-gray-300 font-semibold bg-[#FAF7F2] text-gray-800"
-                    />
-
-                    <div className="grid grid-cols-1 gap-1.5">
-                      {DELIVERY_SLOTS.map((slot) => (
-                        <button
-                          key={slot.id}
-                          onClick={() => onSelectDeliverySlot(slot.title)}
-                          className={`p-2.5 rounded-xl text-left border text-xs transition-all flex items-center justify-between cursor-pointer ${
-                            selectedDeliverySlot === slot.title
-                              ? 'border-[#134e48] bg-[#134e48]/10 text-[#134e48] font-bold shadow-xs'
-                              : 'border-gray-200 text-gray-600 hover:border-gray-300'
-                          }`}
-                        >
-                          <div>
-                            <span className="block font-medium">
-                              {isMarathi ? slot.marathiTitle : slot.title}
-                            </span>
-                            <span className="text-[10px] text-gray-500">{slot.timeRange}</span>
-                          </div>
-                          {selectedDeliverySlot === slot.title && (
-                            <span className="w-2.5 h-2.5 rounded-full bg-[#134e48]" />
-                          )}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-
-                {/* Free Ghee Sachet Addon Checkbox */}
-                <div className="p-3.5 bg-gradient-to-r from-[#134e48]/10 to-[#E89A25]/10 rounded-2xl border border-[#E89A25]/40 flex items-center justify-between">
-                  <div className="flex items-center gap-2.5">
-                    <div className="w-8 h-8 rounded-full bg-[#E89A25] text-[#134e48] flex items-center justify-center font-bold">
-                      <Gift className="w-4 h-4" />
-                    </div>
-                    <div>
-                      <span className="text-xs font-bold text-[#134e48] block leading-tight">
-                        {isMarathi ? 'मोफत शुद्ध साजूक तूप पाऊच' : 'Complimentary Sajuk Ghee Pouch'}
-                      </span>
-                      <span className="text-[10px] text-gray-500">
-                        {isMarathi ? 'प्रत्येक ऑर्डरसोबत मोफत' : 'Included free with your fresh batch'}
-                      </span>
-                    </div>
-                  </div>
-                  <input
-                    type="checkbox"
-                    checked={addComplimentaryGhee}
-                    onChange={(e) => setAddComplimentaryGhee(e.target.checked)}
-                    className="w-5 h-5 accent-[#134e48] rounded cursor-pointer"
-                  />
-                </div>
               </>
             )}
           </div>
