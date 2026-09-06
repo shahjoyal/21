@@ -134,6 +134,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                   }`}
                 >
                   {language === 'mr' ? '२१ कळ्या' : '21 Kalya'}
+                  <sup className="text-[8px] sm:text-[10px] font-bold align-super ml-0.5 not-italic">TM</sup>
                 </span>
                 <span className="text-[10px] sm:text-xs font-bold text-[#EDA124] tracking-widest uppercase">
                   
