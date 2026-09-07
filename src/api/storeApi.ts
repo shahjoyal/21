@@ -1,4 +1,4 @@
-import { ModakProduct, StoreSettings, DeliverySlot } from '../types';
+import { ModakProduct, StoreSettings, DeliverySlot, CustomerOrder } from '../types';
 import { PRODUCTS, DELIVERY_SLOTS } from '../data/products';
 
 const DEFAULT_SETTINGS: StoreSettings = {
@@ -73,6 +73,17 @@ export const storeApi = {
     const data = await res.json().catch(() => ({}));
     if (!res.ok) {
       throw new Error(data.message || 'Invalid or expired promo code.');
+    }
+    return data;
+  },
+
+  // Logged-in customer's own order history (newest first). Requires the
+  // auth cookie, same as everything else behind `protect` on the server.
+  async getMyOrders(): Promise<CustomerOrder[]> {
+    const res = await fetch('/api/orders/my', { credentials: 'include' });
+    const data = await res.json().catch(() => ([]));
+    if (!res.ok) {
+      throw new Error(data.message || 'Could not load your orders.');
     }
     return data;
   }

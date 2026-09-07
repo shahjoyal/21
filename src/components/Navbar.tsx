@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import brandLogoImg from '../assets/images/regenerated_image_1787347112518.png';
 import { BrandLogo } from './BrandLogo';
-import { ShoppingBag, Phone, Clock, Menu, X, Gift, MapPin, User, LogOut } from 'lucide-react';
+import { ShoppingBag, Phone, Clock, Menu, X, Gift, MapPin, User, LogOut, PackageSearch } from 'lucide-react';
 import { CartItem } from '../types';
 import { useAuth } from '../context/AuthContext';
 import { PromoMarquee } from './PromoMarquee';
@@ -189,6 +189,17 @@ export const Navbar: React.FC<NavbarProps> = ({
                   {user.name.split(' ')[0]}
                 </span>
                 <button
+                  onClick={() => navigate('/my-orders')}
+                  className={`p-2 rounded-lg transition-colors ${
+                    scrolled
+                      ? 'bg-[#134e48]/10 hover:bg-[#134e48]/20 text-[#134e48] border border-[#134e48]/10'
+                      : 'bg-white/10 hover:bg-white/20 text-[#F5EEDB] border border-white/10'
+                  }`}
+                  title="My Orders"
+                >
+                  <PackageSearch className="w-4 h-4" />
+                </button>
+                <button
                   onClick={logout}
                   className={`p-2 rounded-lg transition-colors ${
                     scrolled
@@ -319,6 +330,19 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <Phone className="w-4 h-4 text-[#E89A25]" />
                 <span>Call Hotline: +91 73044 72460</span>
               </a>
+
+              {user && (
+                <button
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    navigate('/my-orders');
+                  }}
+                  className="w-full text-center py-2.5 rounded-xl bg-white/10 text-[#F5EEDB] text-sm font-bold flex items-center justify-center gap-2"
+                >
+                  <PackageSearch className="w-4 h-4 text-[#E89A25]" />
+                  <span>My Orders</span>
+                </button>
+              )}
 
               {user && (
                 <button

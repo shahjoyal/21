@@ -5,6 +5,7 @@ import { ProductFormModal } from './ProductFormModal';
 import { OrderDetailsModal } from './OrderDetailsModal';
 import { StoreSettingsTab } from './StoreSettingsTab';
 import { PromoCodesTab } from './PromoCodesTab';
+import { exportOrdersToExcel } from '../../utils/exportOrdersToExcel';
 import {
   Package,
   ShoppingBag,
@@ -24,7 +25,10 @@ import {
   MessageSquare,
   Eye,
   Layers,
-  Tag
+  Tag,
+  Download,
+  Calendar,
+  Truck
 } from 'lucide-react';
 
 interface AdminDashboardProps {
@@ -36,6 +40,7 @@ interface AdminDashboardProps {
   onSaveProduct: (product: Partial<ModakProduct>) => void;
   onDeleteProduct: (id: string) => void;
   onUpdateOrderStatus: (id: string, status: CustomerOrder['status'], paymentStatus?: CustomerOrder['paymentStatus']) => void;
+  onDeleteOrder: (id: string) => void;
   onSaveSettings: (settings: Partial<StoreSettings>) => void;
   onUpdateSlots: (slots: DeliverySlot[]) => void;
   onResetDefaults: () => void;
@@ -51,6 +56,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
   onSaveProduct,
   onDeleteProduct,
   onUpdateOrderStatus,
+  onDeleteOrder,
   onSaveSettings,
   onUpdateSlots,
   onResetDefaults,
@@ -68,6 +74,10 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
   const [selectedOrder, setSelectedOrder] = useState<CustomerOrder | null>(null);
   const [orderStatusFilter, setOrderStatusFilter] = useState<string>('all');
   const [orderSearch, setOrderSearch] = useState('');
+
+  // Excel export date range (empty = no bound on that side)
+  const [exportFromDate, setExportFromDate] = useState('');
+  const [exportToDate, setExportToDate] = useState('');
 
   // Metrics
   const totalRevenue = orders
@@ -117,6 +127,30 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
   const handleToggleSlotAvailability = (slotId: string) => {
     const updated = slots.map(s => s.id === slotId ? { ...s, available: !s.available } : s);
     onUpdateSlots(updated);
+  };
+
+  const handleExportOrders = () => {
+    const ordersInRange = orders.filter((o) => {
+      const orderDate = new Date(o.createdAt);
+      if (exportFromDate) {
+        const from = new Date(exportFromDate);
+        from.setHours(0, 0, 0, 0);
+        if (orderDate < from) return false;
+      }
+      if (exportToDate) {
+        const to = new Date(exportToDate);
+        to.setHours(23, 59, 59, 999);
+        if (orderDate > to) return false;
+      }
+      return true;
+    });
+
+    if (ordersInRange.length === 0) {
+      alert('No orders found in the selected date range.');
+      return;
+    }
+
+    exportOrdersToExcel(ordersInRange, exportFromDate, exportToDate);
   };
 
   return (
@@ -483,6 +517,54 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
               </span>
             </div>
 
+            {/* Excel Export Bar */}
+            <div className="p-4 bg-white rounded-3xl border border-gray-200 shadow-sm flex flex-col sm:flex-row items-center gap-3">
+              <div className="flex items-center gap-1.5 text-xs font-bold text-[#18564D] shrink-0">
+                <Download className="w-4 h-4 text-[#EDA124]" />
+                <span>Export Orders to Excel</span>
+              </div>
+
+              <div className="flex flex-wrap items-center gap-2 flex-1 w-full sm:w-auto">
+                <div className="relative flex-1 min-w-[130px]">
+                  <Calendar className="w-3.5 h-3.5 text-gray-400 absolute left-2.5 top-1/2 -translate-y-1/2" />
+                  <input
+                    type="date"
+                    value={exportFromDate}
+                    onChange={e => setExportFromDate(e.target.value)}
+                    className="w-full pl-7 pr-2 py-2 rounded-xl border border-gray-300 text-xs focus:outline-none focus:border-[#18564D]"
+                    aria-label="From date"
+                  />
+                </div>
+                <span className="text-xs text-gray-400 shrink-0">to</span>
+                <div className="relative flex-1 min-w-[130px]">
+                  <Calendar className="w-3.5 h-3.5 text-gray-400 absolute left-2.5 top-1/2 -translate-y-1/2" />
+                  <input
+                    type="date"
+                    value={exportToDate}
+                    onChange={e => setExportToDate(e.target.value)}
+                    className="w-full pl-7 pr-2 py-2 rounded-xl border border-gray-300 text-xs focus:outline-none focus:border-[#18564D]"
+                    aria-label="To date"
+                  />
+                </div>
+                {(exportFromDate || exportToDate) && (
+                  <button
+                    onClick={() => { setExportFromDate(''); setExportToDate(''); }}
+                    className="text-[11px] font-bold text-gray-400 hover:text-gray-600 shrink-0"
+                  >
+                    Clear
+                  </button>
+                )}
+              </div>
+
+              <button
+                onClick={handleExportOrders}
+                className="w-full sm:w-auto shrink-0 inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-[#18564D] hover:bg-[#0f3c36] text-white text-xs font-bold shadow-sm active:scale-95 transition-all"
+              >
+                <Download className="w-4 h-4 text-[#EDA124]" />
+                Download .xlsx
+              </button>
+            </div>
+
             {/* Orders Table */}
             {filteredOrders.length === 0 ? (
               <div className="p-12 text-center bg-white rounded-3xl border border-gray-200 space-y-3">
@@ -534,6 +616,18 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                         className="inline-flex items-center gap-1 px-3.5 py-2 bg-[#18564D] text-[#F8EDE0] rounded-xl text-xs font-bold hover:bg-[#13443d] transition-colors"
                       >
                         <Eye className="w-3.5 h-3.5 text-[#EDA124]" /> Manage
+                      </button>
+
+                      <button
+                        onClick={() => {
+                          if (confirm(`Delete order #${order.orderNumber}? This can't be undone.`)) {
+                            onDeleteOrder(order.id);
+                          }
+                        }}
+                        className="p-2 rounded-xl bg-red-50 hover:bg-red-100 text-red-600 transition-colors"
+                        title="Delete Order"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
                       </button>
                     </div>
 

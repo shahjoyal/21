@@ -1,5 +1,6 @@
 import React from 'react';
 import { CustomerOrder } from '../../types';
+import { OrderStatusTracker } from '../OrderStatusTracker';
 import { X, MessageSquare, Printer, CheckCircle2, Clock, Truck, ChefHat, AlertCircle } from 'lucide-react';
 
 interface OrderDetailsModalProps {
@@ -116,6 +117,14 @@ export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({
                 Cancel
               </button>
             </div>
+          </div>
+
+          {/* Customer-Facing Tracker Preview — exactly what the customer sees on their "My Orders" page */}
+          <div className="p-4 bg-white rounded-2xl border border-gray-200">
+            <span className="text-[11px] font-bold text-gray-500 uppercase tracking-wider block mb-3">
+              Customer Tracking View
+            </span>
+            <OrderStatusTracker status={order.status} />
           </div>
 
           {/* Delivery & Customer Info */}

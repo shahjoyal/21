@@ -158,6 +158,11 @@ export const AdminApp: React.FC = () => {
     setOrders((prev) => prev.map((o) => (o.id === updated.id ? updated : o)));
   };
 
+  const handleDeleteOrder = async (id: string) => {
+    await adminApi.deleteOrder(id);
+    setOrders((prev) => prev.filter((o) => o.id !== id));
+  };
+
   const handleSaveSettings = async (partial: Partial<StoreSettings>) => {
     const updated = await adminApi.updateSettings(partial);
     setSettings(updated);
@@ -194,6 +199,7 @@ export const AdminApp: React.FC = () => {
       onSaveProduct={handleSaveProduct}
       onDeleteProduct={handleDeleteProduct}
       onUpdateOrderStatus={handleUpdateOrderStatus}
+      onDeleteOrder={handleDeleteOrder}
       onSaveSettings={handleSaveSettings}
       onUpdateSlots={handleUpdateSlots}
       onResetDefaults={handleResetDefaults}
