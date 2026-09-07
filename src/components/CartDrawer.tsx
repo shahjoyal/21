@@ -1,5 +1,5 @@
-import React from 'react';
-import { CartItem } from '../types';
+import React, { useState } from 'react';
+import { CartItem, AppliedPromo } from '../types';
 import {
   X,
   Trash2,
@@ -11,6 +11,8 @@ import {
   Sparkles,
   MessageCircle,
   Check,
+  Tag,
+  Loader2,
 } from 'lucide-react';
 import { FreeDeliveryProgressBar } from './FreeDeliveryProgressBar';
 
@@ -26,6 +28,11 @@ interface CartDrawerProps {
   deliveryDate: string;
   onChangeDeliveryDate: (date: string) => void;
   language: 'en' | 'mr';
+  appliedPromo: AppliedPromo | null;
+  onApplyPromoCode: (code: string) => void;
+  onRemovePromoCode: () => void;
+  promoError: string;
+  isApplyingPromo: boolean;
 }
 
 export const CartDrawer: React.FC<CartDrawerProps> = ({
@@ -40,15 +47,27 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
   deliveryDate,
   onChangeDeliveryDate,
   language,
+  appliedPromo,
+  onApplyPromoCode,
+  onRemovePromoCode,
+  promoError,
+  isApplyingPromo,
 }) => {
   const isMarathi = language === 'mr';
+  const [promoInput, setPromoInput] = useState('');
 
   if (!isOpen) return null;
 
   const subtotal = cart.reduce((acc, item) => acc + item.unitPrice * item.quantity, 0);
   const deliveryThreshold = 799;
   const deliveryFee = subtotal >= deliveryThreshold ? 0 : 60;
-  const grandTotal = subtotal + deliveryFee;
+  const discountAmount = appliedPromo ? Math.round((subtotal * appliedPromo.percentOff) / 100) : 0;
+  const grandTotal = subtotal - discountAmount + deliveryFee;
+
+  const handleApplyClick = () => {
+    if (!promoInput.trim()) return;
+    onApplyPromoCode(promoInput.trim());
+  };
 
   // Quick cross-sell add-ons
   const addOns = [
@@ -92,9 +111,13 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
       )
       .join('\n');
 
+    const promoLine = appliedPromo
+      ? `\n*Promo Applied:* ${appliedPromo.code} (${appliedPromo.percentOff}% off, -₹${discountAmount})`
+      : '';
+
     const message = `*🌺 २१ कळ्या Modak Studio - Direct Order 🌺*\n\n*Order Items:*\n${itemsSummary}\n\n*Preferred Date:* ${
       deliveryDate || 'Tomorrow Morning'
-    }\n*Delivery Slot:* ${selectedDeliverySlot}\n*Order Value:* ₹${grandTotal} (${
+    }\n*Delivery Slot:* ${selectedDeliverySlot}${promoLine}\n*Order Value:* ₹${grandTotal} (${
       deliveryFee === 0 ? 'FREE Delivery' : 'Standard Insulated Delivery'
     })\n\nPlease confirm availability and payment link. ॐ गं गणपतये नमः`;
 
@@ -247,11 +270,66 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
           {/* Drawer Footer Summary & Checkout CTAs */}
           {cart.length > 0 && (
             <div className="p-4 sm:p-5 bg-white border-t border-gray-200 space-y-3 shrink-0 shadow-lg">
+
+              {/* Promo Code */}
+              {appliedPromo ? (
+                <div className="flex items-center justify-between gap-2 p-2.5 rounded-xl bg-emerald-50 border border-emerald-200">
+                  <div className="flex items-center gap-1.5 min-w-0">
+                    <Tag className="w-3.5 h-3.5 text-emerald-700 shrink-0" />
+                    <span className="text-xs font-bold text-emerald-800 truncate">
+                      {appliedPromo.code} — {appliedPromo.percentOff}% {isMarathi ? 'सूट लागू' : 'off applied'}
+                    </span>
+                  </div>
+                  <button
+                    onClick={onRemovePromoCode}
+                    className="text-[10px] font-bold text-red-600 hover:text-red-700 shrink-0"
+                  >
+                    {isMarathi ? 'काढा' : 'Remove'}
+                  </button>
+                </div>
+              ) : (
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2">
+                    <div className="relative flex-1">
+                      <Tag className="w-3.5 h-3.5 text-gray-400 absolute left-2.5 top-1/2 -translate-y-1/2" />
+                      <input
+                        type="text"
+                        value={promoInput}
+                        onChange={(e) => setPromoInput(e.target.value.toUpperCase())}
+                        onKeyDown={(e) => e.key === 'Enter' && handleApplyClick()}
+                        placeholder={isMarathi ? 'प्रोमो कोड टाका' : 'Enter promo code'}
+                        className="w-full pl-8 pr-2.5 py-2 text-xs rounded-xl border border-gray-300 bg-[#FAF7F2] font-bold tracking-wide uppercase placeholder:normal-case placeholder:font-normal placeholder:text-gray-400 focus:ring-2 focus:ring-[#134e48] outline-none"
+                      />
+                    </div>
+                    <button
+                      onClick={handleApplyClick}
+                      disabled={isApplyingPromo || !promoInput.trim()}
+                      className="shrink-0 px-4 py-2 rounded-xl bg-[#134e48] hover:bg-[#0f3c36] text-white font-bold text-xs shadow-sm active:scale-95 transition-all disabled:opacity-50 flex items-center gap-1.5"
+                    >
+                      {isApplyingPromo ? (
+                        <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                      ) : (
+                        isMarathi ? 'लागू करा' : 'Apply'
+                      )}
+                    </button>
+                  </div>
+                  {promoError && (
+                    <p className="text-[10px] font-semibold text-red-600 pl-1">{promoError}</p>
+                  )}
+                </div>
+              )}
+
               <div className="space-y-1.5 text-xs">
                 <div className="flex justify-between text-gray-600">
                   <span>{isMarathi ? 'उपएकूण (Subtotal)' : 'Subtotal'}</span>
                   <span className="font-bold text-gray-900">₹{subtotal}</span>
                 </div>
+                {appliedPromo && discountAmount > 0 && (
+                  <div className="flex justify-between text-emerald-700">
+                    <span>{isMarathi ? `सूट (${appliedPromo.code})` : `Discount (${appliedPromo.code})`}</span>
+                    <span className="font-bold">−₹{discountAmount}</span>
+                  </div>
+                )}
                 <div className="flex justify-between text-gray-600">
                   <span>{isMarathi ? 'इन्सुलेटेड वातानुकूलित डिलिव्हरी' : 'Insulated Fresh Delivery'}</span>
                   <span className="font-bold text-gray-900">

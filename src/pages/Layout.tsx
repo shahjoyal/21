@@ -8,7 +8,7 @@ import { ProductDetailModal } from '../components/ProductDetailModal';
 import { WorkshopInquiryModal } from '../components/WorkshopInquiryModal';
 import { MobileStickyCartBar } from '../components/MobileStickyCartBar';
 import { MessageCircle } from 'lucide-react';
-import { CartItem, ModakProduct, StoreSettings } from '../types';
+import { CartItem, ModakProduct, StoreSettings, AppliedPromo } from '../types';
 
 export interface OutletContextType {
   language: 'en' | 'mr';
@@ -27,6 +27,11 @@ export interface OutletContextType {
   onProceedToCheckout: () => void;
   onUpdateQuantity: (id: string, qty: number) => void;
   onRemoveItem: (id: string) => void;
+  appliedPromo: AppliedPromo | null;
+  onApplyPromoCode: (code: string) => void;
+  onRemovePromoCode: () => void;
+  promoError: string;
+  isApplyingPromo: boolean;
 }
 
 interface LayoutProps {
@@ -106,6 +111,11 @@ export const Layout: React.FC<LayoutProps> = ({
         deliveryDate={ctx.deliveryDate}
         onChangeDeliveryDate={ctx.onChangeDeliveryDate}
         language={ctx.language}
+        appliedPromo={ctx.appliedPromo}
+        onApplyPromoCode={ctx.onApplyPromoCode}
+        onRemovePromoCode={ctx.onRemovePromoCode}
+        promoError={ctx.promoError}
+        isApplyingPromo={ctx.isApplyingPromo}
       />
 
       <AuthModal

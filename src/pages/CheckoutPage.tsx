@@ -40,7 +40,7 @@ export default function CheckoutPage() {
   const ctx = useOutletContext<OutletContextType>();
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { cart, deliveryDate, selectedDeliverySlot, onClearCart, language } = ctx;
+  const { cart, deliveryDate, selectedDeliverySlot, onClearCart, language, appliedPromo } = ctx;
   const isMarathi = language === 'mr';
 
   const [step, setStep] = useState<'details' | 'payment' | 'success'>('details');
@@ -82,7 +82,8 @@ export default function CheckoutPage() {
 
   const subtotal = cart.reduce((acc, item) => acc + item.unitPrice * item.quantity, 0);
   const deliveryFee = subtotal >= 799 ? 0 : 60;
-  const grandTotal = subtotal + deliveryFee;
+  const discountAmount = appliedPromo ? Math.round((subtotal * appliedPromo.percentOff) / 100) : 0;
+  const grandTotal = subtotal - discountAmount + deliveryFee;
 
   const buildOrderData = () => ({
     customerName: formData.name || user?.name || 'Valued Customer',
@@ -106,6 +107,9 @@ export default function CheckoutPage() {
     })),
     subtotal,
     deliveryFee,
+    promoCode: appliedPromo?.code || '',
+    discountPercent: appliedPromo?.percentOff || 0,
+    discountAmount,
     total: grandTotal,
     notes: formData.deliveryNotes,
   });
@@ -393,11 +397,27 @@ export default function CheckoutPage() {
 
               {step === 'payment' && (
                 <div className="space-y-4">
-                  <div className="p-3.5 bg-[#FAF7F2] rounded-2xl border border-gray-200 flex items-center justify-between text-xs font-bold">
-                    <span className="text-gray-700">
-                      {isMarathi ? 'देय एकूण रक्कम:' : 'Total Payable Amount:'}
-                    </span>
-                    <span className="text-lg text-[#134e48]">₹{grandTotal}</span>
+                  <div className="p-3.5 bg-[#FAF7F2] rounded-2xl border border-gray-200 space-y-1.5 text-xs">
+                    <div className="flex items-center justify-between text-gray-600">
+                      <span>{isMarathi ? 'उपएकूण:' : 'Subtotal:'}</span>
+                      <span className="font-bold text-gray-900">₹{subtotal}</span>
+                    </div>
+                    {appliedPromo && discountAmount > 0 && (
+                      <div className="flex items-center justify-between text-emerald-700">
+                        <span>{isMarathi ? `सूट (${appliedPromo.code}):` : `Discount (${appliedPromo.code}):`}</span>
+                        <span className="font-bold">−₹{discountAmount}</span>
+                      </div>
+                    )}
+                    <div className="flex items-center justify-between text-gray-600">
+                      <span>{isMarathi ? 'डिलिव्हरी शुल्क:' : 'Delivery Fee:'}</span>
+                      <span className="font-bold text-gray-900">{deliveryFee === 0 ? 'FREE' : `₹${deliveryFee}`}</span>
+                    </div>
+                    <div className="flex items-center justify-between font-bold pt-1.5 border-t border-gray-200">
+                      <span className="text-gray-700">
+                        {isMarathi ? 'देय एकूण रक्कम:' : 'Total Payable Amount:'}
+                      </span>
+                      <span className="text-lg text-[#134e48]">₹{grandTotal}</span>
+                    </div>
                   </div>
 
                   {error && (

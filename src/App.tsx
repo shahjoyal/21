@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
 import { useAuth } from './context/AuthContext';
 import { ToastProvider, useToast } from './context/ToastContext';
-import { CartItem, ModakProduct, StoreSettings, DeliverySlot } from './types';
+import { CartItem, ModakProduct, StoreSettings, DeliverySlot, AppliedPromo } from './types';
 import { PRODUCTS, DELIVERY_SLOTS } from './data/products';
 import { storeApi } from './api/storeApi';
 import { Layout, OutletContextType } from './pages/Layout';
@@ -59,6 +59,19 @@ function AppShell() {
   const [quickViewProduct, setQuickViewProduct] = useState<ModakProduct | null>(null);
   const [isBulkInquiryOpen, setIsBulkInquiryOpen] = useState(false);
 
+  // Promo Code State
+  const [appliedPromo, setAppliedPromo] = useState<AppliedPromo | null>(() => {
+    try {
+      const saved = localStorage.getItem('21kalya_promo');
+      if (saved) return JSON.parse(saved);
+    } catch {
+      // ignore
+    }
+    return null;
+  });
+  const [promoError, setPromoError] = useState('');
+  const [isApplyingPromo, setIsApplyingPromo] = useState(false);
+
   // Delivery configuration
   const [selectedDeliverySlot, setSelectedDeliverySlot] = useState(
     'Morning Studio & Fresh Batch (8:30 AM – 11:00 AM)'
@@ -94,6 +107,28 @@ function AppShell() {
       // ignore
     }
   }, [cart]);
+
+  // Persist applied promo code to localStorage (or clear it when removed)
+  useEffect(() => {
+    try {
+      if (appliedPromo) {
+        localStorage.setItem('21kalya_promo', JSON.stringify(appliedPromo));
+      } else {
+        localStorage.removeItem('21kalya_promo');
+      }
+    } catch {
+      // ignore
+    }
+  }, [appliedPromo]);
+
+  // Cart is now empty — an applied promo code shouldn't silently carry over
+  // to a brand-new order later, so clear it along with the cart.
+  useEffect(() => {
+    if (cart.length === 0 && appliedPromo) {
+      setAppliedPromo(null);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cart.length]);
 
   // Cart Operations
   const handleAddToCart = (newItem: CartItem) => {
@@ -138,6 +173,28 @@ function AppShell() {
     setCart([]);
   };
 
+  const handleApplyPromoCode = async (code: string) => {
+    setIsApplyingPromo(true);
+    setPromoError('');
+    try {
+      const result = await storeApi.validatePromoCode(code);
+      setAppliedPromo(result);
+      showToast(
+        language === 'mr' ? 'प्रोमो कोड लागू झाला!' : 'Promo code applied!',
+        language === 'mr' ? `${result.percentOff}% सूट मिळाली` : `${result.percentOff}% off applied`
+      );
+    } catch (err: any) {
+      setPromoError(err.message || 'Invalid or expired promo code.');
+    } finally {
+      setIsApplyingPromo(false);
+    }
+  };
+
+  const handleRemovePromoCode = () => {
+    setAppliedPromo(null);
+    setPromoError('');
+  };
+
   const handleToggleLanguage = () => {
     setLanguage((prev) => (prev === 'mr' ? 'en' : 'mr'));
   };
@@ -173,6 +230,11 @@ function AppShell() {
     onProceedToCheckout: handleProceedToCheckout,
     onUpdateQuantity: handleUpdateQuantity,
     onRemoveItem: handleRemoveItem,
+    appliedPromo,
+    onApplyPromoCode: handleApplyPromoCode,
+    onRemovePromoCode: handleRemovePromoCode,
+    promoError,
+    isApplyingPromo,
   };
 
   return (

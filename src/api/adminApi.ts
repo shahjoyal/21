@@ -1,4 +1,4 @@
-import { ModakProduct, CustomerOrder, StoreSettings, DeliverySlot, AuthUser } from '../types';
+import { ModakProduct, CustomerOrder, StoreSettings, DeliverySlot, AuthUser, PromoCode } from '../types';
 
 async function req(path: string, options: RequestInit = {}) {
   const res = await fetch(`/api${path}`, {
@@ -67,5 +67,19 @@ export const adminApi = {
   },
   updateSlots(slots: DeliverySlot[]): Promise<DeliverySlot[]> {
     return req('/slots', { method: 'PUT', body: JSON.stringify(slots) });
+  },
+
+  // Promo Codes
+  getPromoCodes(): Promise<PromoCode[]> {
+    return req('/promocodes');
+  },
+  createPromoCode(code: string, percentOff: number): Promise<PromoCode> {
+    return req('/promocodes', { method: 'POST', body: JSON.stringify({ code, percentOff }) });
+  },
+  updatePromoCode(id: string, updates: Partial<Pick<PromoCode, 'code' | 'percentOff' | 'active'>>): Promise<PromoCode> {
+    return req(`/promocodes/${id}`, { method: 'PUT', body: JSON.stringify(updates) });
+  },
+  deletePromoCode(id: string): Promise<{ success: boolean }> {
+    return req(`/promocodes/${id}`, { method: 'DELETE' });
   },
 };

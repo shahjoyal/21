@@ -83,7 +83,10 @@ router.post('/verify', protect, async (req, res) => {
     const items = orderData.items;
     const subtotal = orderData.subtotal ?? items.reduce((acc, it) => acc + (it.unitPrice || 0) * (it.quantity || 0), 0);
     const deliveryFee = orderData.deliveryFee ?? 0;
-    const total = orderData.total ?? subtotal + deliveryFee;
+    const promoCode = orderData.promoCode || '';
+    const discountPercent = orderData.discountPercent || 0;
+    const discountAmount = orderData.discountAmount || 0;
+    const total = orderData.total ?? subtotal - discountAmount + deliveryFee;
 
     const order = new Order({
       orderNumber: generateOrderNumber(),
@@ -100,6 +103,9 @@ router.post('/verify', protect, async (req, res) => {
       items,
       subtotal,
       deliveryFee,
+      promoCode,
+      discountPercent,
+      discountAmount,
       total,
       notes: orderData.notes || '',
       paymentMethod: 'razorpay',

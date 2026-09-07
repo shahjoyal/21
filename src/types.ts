@@ -123,6 +123,9 @@ export interface CustomerOrder {
   items: CartItem[];
   subtotal: number;
   deliveryFee: number;
+  promoCode?: string;
+  discountPercent?: number;
+  discountAmount?: number;
   total: number;
   paymentMethod: 'razorpay' | 'cod';
   paymentStatus: 'pending' | 'paid' | 'failed';
@@ -153,6 +156,23 @@ export interface StoreSettings {
   freeDeliveryThreshold: number;
   deliveryCities: string[];
   freshBatchesCapacityPerSlot: number;
+}
+
+// ---- Promo Codes ----
+export interface PromoCode {
+  id: string;
+  code: string;
+  percentOff: number;
+  active: boolean;
+  createdAt?: string;
+}
+
+// A promo code the customer has successfully applied to their cart —
+// kept separate from PromoCode (the admin-managed record) since this is
+// just the small bit of info the storefront needs at checkout time.
+export interface AppliedPromo {
+  code: string;
+  percentOff: number;
 }
 
 // ---- Auth ----

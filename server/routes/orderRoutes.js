@@ -12,7 +12,10 @@ function buildOrderPayload(body, user) {
   const items = Array.isArray(body.items) ? body.items : [];
   const subtotal = body.subtotal ?? items.reduce((acc, it) => acc + (it.unitPrice || 0) * (it.quantity || 0), 0);
   const deliveryFee = body.deliveryFee ?? 0;
-  const total = body.total ?? subtotal + deliveryFee;
+  const promoCode = body.promoCode || '';
+  const discountPercent = body.discountPercent || 0;
+  const discountAmount = body.discountAmount || 0;
+  const total = body.total ?? subtotal - discountAmount + deliveryFee;
 
   return {
     orderNumber: generateOrderNumber(),
@@ -29,6 +32,9 @@ function buildOrderPayload(body, user) {
     items,
     subtotal,
     deliveryFee,
+    promoCode,
+    discountPercent,
+    discountAmount,
     total,
     notes: body.notes || '',
   };

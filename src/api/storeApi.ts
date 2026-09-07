@@ -60,5 +60,20 @@ export const storeApi = {
       // pass
     }
     return DELIVERY_SLOTS;
+  },
+
+  // Checks a promo code against the server and returns its discount if valid.
+  // Throws with a friendly message ("Invalid or expired promo code.") if not.
+  async validatePromoCode(code: string): Promise<{ code: string; percentOff: number }> {
+    const res = await fetch('/api/promocodes/validate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ code }),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      throw new Error(data.message || 'Invalid or expired promo code.');
+    }
+    return data;
   }
 };

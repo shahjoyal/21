@@ -4,6 +4,7 @@ import { ModakProduct, CustomerOrder, StoreSettings, DeliverySlot } from '../../
 import { ProductFormModal } from './ProductFormModal';
 import { OrderDetailsModal } from './OrderDetailsModal';
 import { StoreSettingsTab } from './StoreSettingsTab';
+import { PromoCodesTab } from './PromoCodesTab';
 import {
   Package,
   ShoppingBag,
@@ -22,7 +23,8 @@ import {
   CheckCircle2,
   MessageSquare,
   Eye,
-  Layers
+  Layers,
+  Tag
 } from 'lucide-react';
 
 interface AdminDashboardProps {
@@ -54,7 +56,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
   onResetDefaults,
   onLogout
 }) => {
-  const [activeTab, setActiveTab] = useState<'products' | 'orders' | 'slots' | 'settings'>('products');
+  const [activeTab, setActiveTab] = useState<'products' | 'orders' | 'slots' | 'promos' | 'settings'>('products');
   const [productSearch, setProductSearch] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   
@@ -267,6 +269,18 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
           >
             <Clock className="w-4 h-4" />
             <span>Steaming Slots & Batches</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab('promos')}
+            className={`flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap ${
+              activeTab === 'promos'
+                ? 'bg-[#18564D] text-[#F8EDE0] shadow-md'
+                : 'text-gray-600 hover:bg-gray-100'
+            }`}
+          >
+            <Tag className="w-4 h-4" />
+            <span>Promo Codes</span>
           </button>
 
           <button
@@ -579,7 +593,10 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
           </div>
         )}
 
-        {/* Tab 4: Store Settings & WhatsApp */}
+        {/* Tab 4: Promo Codes */}
+        {activeTab === 'promos' && <PromoCodesTab />}
+
+        {/* Tab 5: Store Settings & WhatsApp */}
         {activeTab === 'settings' && (
           <StoreSettingsTab
             settings={settings}

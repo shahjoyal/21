@@ -9,11 +9,13 @@ import { GoogleGenAI } from '@google/genai';
 
 import { connectDB } from './server/config/db.js';
 import { seedAdmin } from './server/seed/adminSeed.js';
+import { seedPromoCodes } from './server/seed/promoSeed.js';
 import authRoutes from './server/routes/authRoutes.js';
 import productRoutes from './server/routes/productRoutes.js';
 import orderRoutes from './server/routes/orderRoutes.js';
 import paymentRoutes from './server/routes/paymentRoutes.js';
 import settingsRoutes from './server/routes/settingsRoutes.js';
+import promoRoutes from './server/routes/promoRoutes.js';
 import Product from './server/models/Product.js';
 
 const app = express();
@@ -46,6 +48,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/payment', paymentRoutes);
+app.use('/api/promocodes', promoRoutes);
 app.use('/api', settingsRoutes); // exposes /api/settings and /api/slots
 
 // -------------------------------------------------------------
@@ -126,6 +129,7 @@ app.post('/api/chat', async (req, res) => {
 async function startServer() {
   await connectDB();
   await seedAdmin().catch((err) => console.error('Admin seed error:', err));
+  await seedPromoCodes().catch((err) => console.error('Promo code seed error:', err));
 
   if (process.env.NODE_ENV !== 'production') {
     const vite = await createViteServer({
