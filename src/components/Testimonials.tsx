@@ -16,6 +16,7 @@ import {
   ChevronRight,
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
+import { useSiteContent } from '../hooks/useSiteContent';
 
 interface TestimonialsProps {
   language: 'en' | 'mr';
@@ -23,6 +24,7 @@ interface TestimonialsProps {
 
 export const Testimonials: React.FC<TestimonialsProps> = ({ language }) => {
   const isMarathi = language === 'mr';
+  const { get } = useSiteContent();
 
   const [reviewsList, setReviewsList] = useState<Review[]>(REVIEWS);
   const [filterCategory, setFilterCategory] = useState<string>('all');
@@ -93,17 +95,15 @@ export const Testimonials: React.FC<TestimonialsProps> = ({ language }) => {
         <div className="text-center max-w-2xl mx-auto mb-6 space-y-1.5">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#134e48] text-[#E89A25] text-[10px] font-bold uppercase tracking-wider shadow-xs">
             <Star className="w-3 h-3 fill-[#E89A25]" />
-            <span>{isMarathi ? 'ग्राहक व कार्यशाळा विद्यार्थी अनुभव' : 'Verified Reviews & Customer Love'}</span>
+            <span>{isMarathi ? get('testimonials_eyebrow_mr') : get('testimonials_eyebrow_en')}</span>
           </div>
 
           <h2 className="font-devanagari text-2xl sm:text-3xl lg:text-4xl font-black text-[#134e48] leading-tight">
-            {isMarathi ? 'हजारो तृप्त खवय्ये व शिकणाऱ्यांचे अभिप्राय' : 'Loved by Over 10,000+ Modak Connoisseurs'}
+            {isMarathi ? get('testimonials_heading_mr') : get('testimonials_heading_en')}
           </h2>
 
           <p className="text-gray-600 text-[11px] sm:text-xs leading-relaxed">
-            {isMarathi
-              ? 'मुंबई, पुणे व महाराष्ट्रातील भाविक आणि खवय्यांनी अनुभवलेली २१ कळ्यांची पवित्र परंपरा व अप्रतिम चव.'
-              : 'Real verified reviews from pooja orders, festive celebrations, and culinary workshop participants.'}
+            {isMarathi ? get('testimonials_subheading_mr') : get('testimonials_subheading_en')}
           </p>
         </div>
 

@@ -1,4 +1,4 @@
-import { ModakProduct, CustomerOrder, StoreSettings, DeliverySlot, AuthUser, PromoCode } from '../types';
+import { ModakProduct, CustomerOrder, StoreSettings, DeliverySlot, AuthUser, PromoCode, WorkshopSession } from '../types';
 
 async function req(path: string, options: RequestInit = {}) {
   const res = await fetch(`/api${path}`, {
@@ -81,5 +81,46 @@ export const adminApi = {
   },
   deletePromoCode(id: string): Promise<{ success: boolean }> {
     return req(`/promocodes/${id}`, { method: 'DELETE' });
+  },
+
+  // Workshops
+  getWorkshops(): Promise<WorkshopSession[]> {
+    return req('/workshops');
+  },
+  createWorkshop(workshop: Partial<WorkshopSession>): Promise<WorkshopSession> {
+    return req('/workshops', { method: 'POST', body: JSON.stringify(workshop) });
+  },
+  updateWorkshop(id: string, workshop: Partial<WorkshopSession>): Promise<WorkshopSession> {
+    return req(`/workshops/${id}`, { method: 'PUT', body: JSON.stringify(workshop) });
+  },
+  deleteWorkshop(id: string): Promise<{ success: boolean }> {
+    return req(`/workshops/${id}`, { method: 'DELETE' });
+  },
+
+  // Site Content (editable page text)
+  getContent(): Promise<Record<string, string>> {
+    return req('/content');
+  },
+  updateContent(updates: Record<string, string>): Promise<Record<string, string>> {
+    return req('/content', { method: 'PUT', body: JSON.stringify({ updates }) });
+  },
+
+  // Image Upload — multipart, so it bypasses the JSON `req()` helper above.
+  // Returns the servable URL plus a `git` status object describing whether
+  // the file was committed/pushed to your repository.
+  async uploadImage(file: File): Promise<{ url: string; filename: string; git: { committed: boolean; pushed: boolean; message: string } }> {
+    const formData = new FormData();
+    formData.append('image', file);
+
+    const res = await fetch('/api/upload/image', {
+      method: 'POST',
+      credentials: 'include',
+      body: formData,
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      throw new Error(data.message || 'Image upload failed.');
+    }
+    return data;
   },
 };

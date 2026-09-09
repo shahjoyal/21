@@ -5,6 +5,7 @@ import { Reveal, RevealGroup, revealItemVariants } from '../components/Reveal';
 import { motion } from 'motion/react';
 import { CRAFT_MAKING_IMAGE } from '../data/products';
 import { OutletContextType } from './Layout';
+import { useSiteContent } from '../hooks/useSiteContent';
 
 /**
  * Standalone "About Us" page — reachable from the navbar. Mirrors the
@@ -15,35 +16,28 @@ import { OutletContextType } from './Layout';
 export default function AboutPage() {
   const ctx = useOutletContext<OutletContextType>();
   const isMarathi = ctx.language === 'mr';
+  const { get } = useSiteContent();
 
   const values = [
     {
       icon: <Heart className="w-6 h-6" />,
-      title: isMarathi ? 'प्रेमाने बनवलेले' : 'Made with Love',
-      desc: isMarathi
-        ? 'प्रत्येक मोदकात घराची ऊब आणि पिढ्यानपिढ्याचे प्रेम असते.'
-        : 'Every modak carries the warmth of home and generations of love.'
+      title: isMarathi ? get('about_value1_title_mr') : get('about_value1_title_en'),
+      desc: isMarathi ? get('about_value1_desc_mr') : get('about_value1_desc_en'),
     },
     {
       icon: <Hand className="w-6 h-6" />,
-      title: isMarathi ? 'हस्तकलेतील उत्कृष्टता' : 'Handcrafted Excellence',
-      desc: isMarathi
-        ? 'यंत्रांचा वापर नाही — दशकांचा अनुभव असलेल्या कुशल हातांनीच घडवलेले.'
-        : 'No machines — only skilled hands that have perfected the art over decades.'
+      title: isMarathi ? get('about_value2_title_mr') : get('about_value2_title_en'),
+      desc: isMarathi ? get('about_value2_desc_mr') : get('about_value2_desc_en'),
     },
     {
       icon: <Award className="w-6 h-6" />,
-      title: isMarathi ? 'गुणवत्ता प्रथम' : 'Quality First',
-      desc: isMarathi
-        ? 'साहित्य किंवा प्रक्रियेत कधीही तडजोड नाही. फक्त सर्वोत्तम.'
-        : 'We never compromise on ingredients or process. Only the best for our customers.'
+      title: isMarathi ? get('about_value3_title_mr') : get('about_value3_title_en'),
+      desc: isMarathi ? get('about_value3_desc_mr') : get('about_value3_desc_en'),
     },
     {
       icon: <Leaf className="w-6 h-6" />,
-      title: isMarathi ? 'शुद्ध व नैसर्गिक' : 'Pure & Natural',
-      desc: isMarathi
-        ? 'कोणतेही प्रिझर्व्हेटिव्ह्ज नाही, कृत्रिम स्वाद नाही — फक्त शुद्ध, सात्त्विक चव.'
-        : 'No preservatives, no artificial flavors — just pure, wholesome goodness.'
+      title: isMarathi ? get('about_value4_title_mr') : get('about_value4_title_en'),
+      desc: isMarathi ? get('about_value4_desc_mr') : get('about_value4_desc_en'),
     }
   ];
 
@@ -60,22 +54,20 @@ export default function AboutPage() {
         <div className="max-w-3xl mx-auto px-4 sm:px-6 relative z-10">
           <Reveal>
             <span className="text-[11px] sm:text-xs font-bold uppercase tracking-[0.25em] text-[#E89A25]">
-              {isMarathi ? 'आमच्याविषयी' : 'About Us'}
+              {isMarathi ? get('about_hero_eyebrow_mr') : get('about_hero_eyebrow_en')}
             </span>
           </Reveal>
           <Reveal delay={0.08}>
             <h1 className="font-serif-luxury text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight mt-3">
               <span className="text-white">
-                {isMarathi ? 'आमची कहाणी, तुमची ' : 'Our Story, Your '}
+                {isMarathi ? get('about_hero_heading1_mr') : get('about_hero_heading1_en')}
               </span>
-              <span className="text-[#E89A25]">{isMarathi ? 'परंपरा' : 'Tradition'}</span>
+              <span className="text-[#E89A25]">{isMarathi ? get('about_hero_heading2_mr') : get('about_hero_heading2_en')}</span>
             </h1>
           </Reveal>
           <Reveal delay={0.16}>
             <p className="text-white/70 text-sm sm:text-base leading-relaxed mt-5 max-w-xl mx-auto">
-              {isMarathi
-                ? 'मुंबईतील एका छोट्या स्वयंपाकघरापासून ते संपूर्ण भारतातील घराघरांपर्यंत — आमचा प्रवास अस्सलपणा, गुणवत्ता आणि परंपरेशी असलेल्या अतूट बांधिलकीत रुजलेला आहे.'
-                : 'From a small kitchen in Mumbai to homes across India — our journey is rooted in authenticity, quality, and an unwavering commitment to tradition.'}
+              {isMarathi ? get('about_hero_paragraph_mr') : get('about_hero_paragraph_en')}
             </p>
           </Reveal>
         </div>
@@ -97,31 +89,19 @@ export default function AboutPage() {
 
           <Reveal y={26} delay={0.1} className="space-y-4">
             <span className="text-[11px] sm:text-xs font-bold uppercase tracking-[0.2em] text-[#E89A25]">
-              {isMarathi ? 'आमचा वारसा' : 'Our Heritage'}
+              {isMarathi ? get('about_heritage_eyebrow_mr') : get('about_heritage_eyebrow_en')}
             </span>
             <h2 className="font-serif-luxury text-3xl sm:text-4xl lg:text-[42px] font-bold text-[#134e48] leading-tight">
-              {isMarathi ? '२१ कळ्यांच्या मोदककलेचा वारसा' : 'A Legacy of 21-Pleat Modak Making'}
+              {isMarathi ? get('about_heritage_heading_mr') : get('about_heritage_heading_en')}
             </h2>
             <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
-              {isMarathi ? (
-                <>
-                  <span className="font-devanagari font-semibold text-[#134e48]">२१ कळ्या</span> म्हणजे &lsquo;२१ कळ्या&rsquo; — गणेश चतुर्थीच्या वेळी अर्पण केल्या जाणाऱ्या २१ प्रकारच्या मोदकांचे प्रतीक. अन्न प्रेमाने बनवले की त्याची चव अधिक चांगली लागते या साध्या श्रद्धेने आमचा प्रवास सुरू झाला.
-                </>
-              ) : (
-                <>
-                  <strong className="text-[#134e48]">२१ कळ्या</strong> means &lsquo;21 buds&rsquo; — symbolizing the 21 varieties of modaks traditionally offered during Ganesh Chaturthi. Our journey began with a simple belief: that food made with love tastes better.
-                </>
-              )}
+              {isMarathi ? get('about_heritage_p1_mr') : get('about_heritage_p1_en')}
             </p>
             <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
-              {isMarathi
-                ? 'भाटिया कुटुंबाने स्थापन केलेली २१ कळ्या ही अस्सल महाराष्ट्रीयन मिठाईंच्या आवडीतून जन्मली. काही काळातच आम्ही अस्सल उकडीच्या मोदकांची अस्सल चव प्रेमाने आणि समर्पणाने संपूर्ण भारतातील घराघरांपर्यंत पोहोचवली आहे.'
-                : "Founded by the Bhatia family, २१ कळ्या was born from a passion for authentic Maharashtrian sweets. In a short time, we've brought the traditional taste of Ukadiche Modaks to homes across India with love and dedication."}
+              {isMarathi ? get('about_heritage_p2_mr') : get('about_heritage_p2_en')}
             </p>
             <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
-              {isMarathi
-                ? 'आज, आम्ही सर्वोत्तम साहित्य वापरून प्रत्येक मोदक काळजीपूर्वक तयार करतो, परंपरा आणि गुणवत्तेची सांगड घालतो — कारण प्रत्येक घास हा उत्सवासारखा वाटला पाहिजे.'
-                : "Today, we continue to craft every modak with the finest ingredients, blending tradition with quality — because every bite should feel like a celebration."}
+              {isMarathi ? get('about_heritage_p3_mr') : get('about_heritage_p3_en')}
             </p>
           </Reveal>
         </div>
@@ -132,15 +112,13 @@ export default function AboutPage() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <Reveal className="text-center max-w-2xl mx-auto mb-12 sm:mb-16 space-y-3">
             <span className="text-[11px] sm:text-xs font-bold uppercase tracking-[0.2em] text-[#E89A25]">
-              {isMarathi ? 'आमची मूल्ये' : 'Our Values'}
+              {isMarathi ? get('about_values_eyebrow_mr') : get('about_values_eyebrow_en')}
             </span>
             <h2 className="font-serif-luxury text-3xl sm:text-4xl lg:text-5xl font-bold text-[#134e48]">
-              {isMarathi ? 'आम्हाला प्रेरणा देणारी तत्त्वे' : 'What Drives Us'}
+              {isMarathi ? get('about_values_heading_mr') : get('about_values_heading_en')}
             </h2>
             <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
-              {isMarathi
-                ? 'साहित्य निवडण्यापासून ते तुमची ऑर्डर पॅक करण्यापर्यंत — ही तत्त्वे आमच्या प्रत्येक कृतीला मार्गदर्शन करतात.'
-                : 'These principles guide everything we do, from sourcing ingredients to packaging your order.'}
+              {isMarathi ? get('about_values_subheading_mr') : get('about_values_subheading_en')}
             </p>
           </Reveal>
 
@@ -167,15 +145,13 @@ export default function AboutPage() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <Reveal className="max-w-2xl mx-auto mb-12 sm:mb-16 space-y-3">
             <span className="text-[11px] sm:text-xs font-bold uppercase tracking-[0.2em] text-[#E89A25]">
-              {isMarathi ? 'आमची टीम' : 'Our Team'}
+              {isMarathi ? get('about_team_eyebrow_mr') : get('about_team_eyebrow_en')}
             </span>
             <h2 className="font-serif-luxury text-3xl sm:text-4xl lg:text-5xl font-bold text-[#134e48]">
-              {isMarathi ? 'प्रत्येक उत्तम मोदकामागे' : 'Behind Every Great Modak'}
+              {isMarathi ? get('about_team_heading_mr') : get('about_team_heading_en')}
             </h2>
             <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
-              {isMarathi
-                ? '२१ कळ्या शक्य करणाऱ्या समर्पित माणसांना भेटा.'
-                : 'Meet the passionate people who make २१ कळ्या possible.'}
+              {isMarathi ? get('about_team_subheading_mr') : get('about_team_subheading_en')}
             </p>
           </Reveal>
 

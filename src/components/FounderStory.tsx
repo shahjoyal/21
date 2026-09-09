@@ -3,6 +3,7 @@ import { motion } from 'motion/react';
 import { Users, Heart, Quote } from 'lucide-react';
 import { UKADICHE_STEAMING_IMAGE } from '../data/products';
 import { Reveal } from './Reveal';
+import { useSiteContent } from '../hooks/useSiteContent';
 
 interface FounderStoryProps {
   language: 'en' | 'mr';
@@ -16,20 +17,21 @@ interface FounderStoryProps {
  */
 export const FounderStory: React.FC<FounderStoryProps> = ({ language }) => {
   const isMarathi = language === 'mr';
+  const { get } = useSiteContent();
 
   return (
     <section className="py-14 sm:py-20 bg-[#FBEEDA] relative overflow-hidden">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <Reveal className="text-center max-w-2xl mx-auto mb-10 sm:mb-14 space-y-2">
           <span className="text-[11px] sm:text-xs font-bold uppercase tracking-[0.2em] text-[#E89A25]">
-            {isMarathi ? 'आमचा प्रवास' : 'Our Journey'}
+            {isMarathi ? get('founder_eyebrow_mr') : get('founder_eyebrow_en')}
           </span>
           <h2 className="font-serif-luxury text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight">
             <span className="text-[#134e48]">
-              {isMarathi ? 'श्रद्धेने बनवलेले, ' : 'Crafted with Devotion, '}
+              {isMarathi ? get('founder_heading1_mr') : get('founder_heading1_en')}
             </span>
             <span className="text-[#E89A25]">
-              {isMarathi ? 'अभिमानाने वाटलेले' : 'Shared with Pride'}
+              {isMarathi ? get('founder_heading2_mr') : get('founder_heading2_en')}
             </span>
           </h2>
         </Reveal>
@@ -51,22 +53,10 @@ export const FounderStory: React.FC<FounderStoryProps> = ({ language }) => {
           <Reveal y={26} delay={0.1} className="space-y-6">
             <div className="space-y-4 text-sm sm:text-base text-gray-700 leading-relaxed">
               <p>
-                {isMarathi ? (
-                  <>
-                    गृह शेफ आणि पाककला मार्गदर्शक <strong className="text-[#134e48]">अक्षता भाटिया केदारी</strong> यांनी स्थापन केलेले{' '}
-                    <strong className="text-[#134e48]">“२१ कळ्या — 21 Kalya™”</strong> हे पिढ्यानपिढ्या जपलेल्या पारंपरिक महाराष्ट्रीयन मिठाई कलेचा कळस आहे.
-                  </>
-                ) : (
-                  <>
-                    Founded by home chef and culinary mentor <strong className="text-[#134e48]">Akshata Bhatia Kedari</strong>,{' '}
-                    <strong className="text-[#134e48]">“२१ कळ्या — 21 Kalya™”</strong> represents the culmination of generations of traditional Maharashtrian sweets-making expertise.
-                  </>
-                )}
+                {isMarathi ? get('founder_paragraph1_mr') : get('founder_paragraph1_en')}
               </p>
               <p>
-                {isMarathi
-                  ? 'मुंबईतील एका छोट्या स्वयंपाकघरातून सुरू झालेला हा प्रवास आज एका मोठ्या ऑनलाइन समुदायात व पाककला ब्रँडमध्ये रूपांतरित झाला आहे. आज आम्ही सणांसाठी अस्सल उकडीचे मोदक पुरवतो, प्रत्यक्ष पाककला वर्ग आयोजित करतो आणि घरगुती शेफना स्वतःचा शाश्वत पाककला ब्रँड सुरू करण्यास मदत करतो.'
-                  : 'What started as a kitchen-laboratory in Mumbai has expanded into a massive online community and culinary brand. Today, we specialize in supplying authentic melt-in-mouth steamed Ukadiche Modaks for festivals, organizing hands-on cooking classes, and helping domestic cooks launch their own sustainable culinary labels.'}
+                {isMarathi ? get('founder_paragraph2_mr') : get('founder_paragraph2_en')}
               </p>
             </div>
 
@@ -80,9 +70,9 @@ export const FounderStory: React.FC<FounderStoryProps> = ({ language }) => {
                 className="bg-white rounded-2xl border border-black/5 shadow-sm p-5 text-center space-y-1.5"
               >
                 <Users className="w-5 h-5 text-[#E89A25] mx-auto" />
-                <p className="font-serif-luxury text-2xl sm:text-3xl font-bold text-[#134e48]">78K+</p>
+                <p className="font-serif-luxury text-2xl sm:text-3xl font-bold text-[#134e48]">{get('founder_stat1_number')}</p>
                 <p className="text-[10px] sm:text-xs text-gray-500 uppercase tracking-wide font-semibold">
-                  {isMarathi ? 'समुदाय सदस्य' : 'Community Members'}
+                  {isMarathi ? get('founder_stat1_label_mr') : get('founder_stat1_label_en')}
                 </p>
               </motion.div>
 
@@ -94,9 +84,9 @@ export const FounderStory: React.FC<FounderStoryProps> = ({ language }) => {
                 className="bg-white rounded-2xl border border-black/5 shadow-sm p-5 text-center space-y-1.5"
               >
                 <Heart className="w-5 h-5 text-[#E89A25] mx-auto" />
-                <p className="font-serif-luxury text-2xl sm:text-3xl font-bold text-[#134e48]">10K+</p>
+                <p className="font-serif-luxury text-2xl sm:text-3xl font-bold text-[#134e48]">{get('founder_stat2_number')}</p>
                 <p className="text-[10px] sm:text-xs text-gray-500 uppercase tracking-wide font-semibold">
-                  {isMarathi ? 'ब्रँड फॉलोअर्स' : 'Brand Followers'}
+                  {isMarathi ? get('founder_stat2_label_mr') : get('founder_stat2_label_en')}
                 </p>
               </motion.div>
             </div>
@@ -111,12 +101,10 @@ export const FounderStory: React.FC<FounderStoryProps> = ({ language }) => {
             >
               <Quote className="w-6 h-6 text-[#E89A25]/30 absolute top-4 right-4" />
               <p className="text-sm sm:text-base text-gray-700 italic leading-relaxed pr-6">
-                {isMarathi
-                  ? '“स्वयंपाक फक्त पाककृतींबद्दल नसतो; तो शुद्ध प्रेम वाटण्याबद्दल असतो.”'
-                  : '“Cooking isn’t just about recipes; it’s about sharing pure love.”'}
+                {isMarathi ? get('founder_quote_mr') : get('founder_quote_en')}
               </p>
               <p className="text-xs sm:text-sm font-bold text-[#134e48] mt-2">
-                — Akshata Bhatia Kedari
+                {get('founder_quote_attribution')}
               </p>
             </motion.div>
           </Reveal>

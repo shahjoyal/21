@@ -5,6 +5,8 @@ import { ProductFormModal } from './ProductFormModal';
 import { OrderDetailsModal } from './OrderDetailsModal';
 import { StoreSettingsTab } from './StoreSettingsTab';
 import { PromoCodesTab } from './PromoCodesTab';
+import { WorkshopsTab } from './WorkshopsTab';
+import { ContentEditorTab } from './ContentEditorTab';
 import { exportOrdersToExcel } from '../../utils/exportOrdersToExcel';
 import {
   Package,
@@ -28,7 +30,9 @@ import {
   Tag,
   Download,
   Calendar,
-  Truck
+  Truck,
+  GraduationCap,
+  FileText
 } from 'lucide-react';
 
 interface AdminDashboardProps {
@@ -62,7 +66,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
   onResetDefaults,
   onLogout
 }) => {
-  const [activeTab, setActiveTab] = useState<'products' | 'orders' | 'slots' | 'promos' | 'settings'>('products');
+  const [activeTab, setActiveTab] = useState<'products' | 'workshops' | 'orders' | 'slots' | 'promos' | 'content' | 'settings'>('products');
   const [productSearch, setProductSearch] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   
@@ -277,6 +281,18 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
           </button>
 
           <button
+            onClick={() => setActiveTab('workshops')}
+            className={`flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap ${
+              activeTab === 'workshops'
+                ? 'bg-[#18564D] text-[#F8EDE0] shadow-md'
+                : 'text-gray-600 hover:bg-gray-100'
+            }`}
+          >
+            <GraduationCap className="w-4 h-4" />
+            <span>Workshops</span>
+          </button>
+
+          <button
             onClick={() => setActiveTab('orders')}
             className={`flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap ${
               activeTab === 'orders'
@@ -315,6 +331,18 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
           >
             <Tag className="w-4 h-4" />
             <span>Promo Codes</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab('content')}
+            className={`flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap ${
+              activeTab === 'content'
+                ? 'bg-[#18564D] text-[#F8EDE0] shadow-md'
+                : 'text-gray-600 hover:bg-gray-100'
+            }`}
+          >
+            <FileText className="w-4 h-4" />
+            <span>Page Text</span>
           </button>
 
           <button
@@ -689,6 +717,12 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
 
         {/* Tab 4: Promo Codes */}
         {activeTab === 'promos' && <PromoCodesTab />}
+
+        {/* Tab: Workshops */}
+        {activeTab === 'workshops' && <WorkshopsTab />}
+
+        {/* Tab: Page Text / Content Editor */}
+        {activeTab === 'content' && <ContentEditorTab />}
 
         {/* Tab 5: Store Settings & WhatsApp */}
         {activeTab === 'settings' && (

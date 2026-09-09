@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { Leaf, Hand, Package, Heart } from 'lucide-react';
 import { RevealGroup, revealItemVariants, Reveal } from './Reveal';
+import { useSiteContent } from '../hooks/useSiteContent';
 
 interface WhyChooseUsProps {
   language: 'en' | 'mr';
@@ -9,35 +10,28 @@ interface WhyChooseUsProps {
 
 export const WhyChooseUs: React.FC<WhyChooseUsProps> = ({ language }) => {
   const isMarathi = language === 'mr';
+  const { get } = useSiteContent();
 
   const points = [
     {
       icon: <Leaf className="w-5 h-5" />,
-      title: isMarathi ? '१००% ताजी सामग्री' : '100% Fresh Ingredients',
-      desc: isMarathi
-        ? 'शेतातून थेट आणलेली सर्वोत्तम नैसर्गिक सामग्री.'
-        : 'We source the finest natural ingredients directly from farms.',
+      title: isMarathi ? get('why_card1_title_mr') : get('why_card1_title_en'),
+      desc: isMarathi ? get('why_card1_desc_mr') : get('why_card1_desc_en'),
     },
     {
       icon: <Hand className="w-5 h-5" />,
-      title: isMarathi ? 'दररोज हाताने बनवलेले' : 'Handmade Daily',
-      desc: isMarathi
-        ? 'प्रत्येक मोदक दररोज सकाळी प्रेमाने हाताने बनवला जातो.'
-        : 'Every modak is handcrafted fresh every morning with love.',
+      title: isMarathi ? get('why_card2_title_mr') : get('why_card2_title_en'),
+      desc: isMarathi ? get('why_card2_desc_mr') : get('why_card2_desc_en'),
     },
     {
       icon: <Package className="w-5 h-5" />,
-      title: isMarathi ? 'प्रीमियम पॅकेजिंग' : 'Premium Packaging',
-      desc: isMarathi
-        ? 'ताजेपणा टिकवणारे पर्यावरणपूरक लक्झरी पॅकेजिंग.'
-        : 'Eco-friendly luxury packaging that preserves freshness.',
+      title: isMarathi ? get('why_card3_title_mr') : get('why_card3_title_en'),
+      desc: isMarathi ? get('why_card3_desc_mr') : get('why_card3_desc_en'),
     },
     {
       icon: <Heart className="w-5 h-5" />,
-      title: isMarathi ? 'अस्सल चव' : 'Authentic Taste',
-      desc: isMarathi
-        ? 'उत्तम नैसर्गिक घटकांसह बनवलेल्या पारंपरिक कौटुंबिक पाककृती.'
-        : 'Traditional family recipes crafted with the finest natural ingredients.',
+      title: isMarathi ? get('why_card4_title_mr') : get('why_card4_title_en'),
+      desc: isMarathi ? get('why_card4_desc_mr') : get('why_card4_desc_en'),
     },
   ];
 
@@ -46,19 +40,13 @@ export const WhyChooseUs: React.FC<WhyChooseUsProps> = ({ language }) => {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <Reveal className="text-center max-w-2xl mx-auto mb-10 sm:mb-14 space-y-3">
           <span className="text-[11px] sm:text-xs font-bold uppercase tracking-[0.2em] text-[#E89A25]">
-            {isMarathi ? 'आम्हाला का निवडावे' : 'Why Choose Us'}
+            {isMarathi ? get('why_eyebrow_mr') : get('why_eyebrow_en')}
           </span>
           <h2 className="font-serif-luxury text-3xl sm:text-4xl lg:text-5xl font-bold text-[#134e48] leading-tight">
-            {isMarathi ? (
-              <>श्रद्धेने बनवलेले, अभिमानाने पोहोचवलेले</>
-            ) : (
-              <>Crafted With Passion, Delivered With Pride</>
-            )}
+            {isMarathi ? get('why_heading_mr') : get('why_heading_en')}
           </h2>
           <p className="text-gray-600 text-sm sm:text-base leading-relaxed">
-            {isMarathi
-              ? 'आम्ही फक्त मोदक बनवत नाही — आम्ही तुम्हाला तुमच्या मुळांशी जोडणारे अनुभव तयार करतो.'
-              : "We don't just make modaks — we create experiences that connect you to your roots."}
+            {isMarathi ? get('why_subheading_mr') : get('why_subheading_en')}
           </p>
         </Reveal>
 

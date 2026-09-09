@@ -1,6 +1,7 @@
 import React from 'react';
 import { CRAFT_MAKING_IMAGE } from '../data/products';
 import { ChefHat } from 'lucide-react';
+import { useSiteContent } from '../hooks/useSiteContent';
 
 interface HeritageCraftStoryProps {
   language: 'en' | 'mr';
@@ -8,35 +9,28 @@ interface HeritageCraftStoryProps {
 
 export const HeritageCraftStory: React.FC<HeritageCraftStoryProps> = ({ language }) => {
   const isMarathi = language === 'mr';
+  const { get } = useSiteContent();
 
   const craftPillars = [
     {
       num: '01',
-      title: isMarathi ? 'अचूक २१ कळ्यांची हस्तकला' : 'Exact 21 Handcrafted Pleats',
-      desc: isMarathi
-        ? 'प्रत्येक मोदकात आमच्या कार्यशाळेत शिकवल्याप्रमाणे २१ सुरेख पाकळ्या समान अंतरावर बोटांच्या टोकाने कोरल्या जातात.'
-        : 'Our master halwais skillfully teach the pinching sequence of exactly 21 distinct folds before encasing the sweet coconut core.'
+      title: isMarathi ? get('craft_pillar1_title_mr') : get('craft_pillar1_title_en'),
+      desc: isMarathi ? get('craft_pillar1_desc_mr') : get('craft_pillar1_desc_en'),
     },
     {
       num: '02',
-      title: isMarathi ? 'सुगंधी आंबेमोहर तांदळाची उकड' : 'Aromatic Ambemohar Dough Science',
-      desc: isMarathi
-        ? 'मूळ कोकणातील आंबेमोहर तांदळाच्या पिठाची गरम पाण्याची मंद आचेवर मऊ लुसलुशीत उकड व लवचिकता तंत्र.'
-        : 'Stone-ground fragrant Ambemohar rice flour steamed with precise hydration to achieve a delicate, crack-free silky shell.'
+      title: isMarathi ? get('craft_pillar2_title_mr') : get('craft_pillar2_title_en'),
+      desc: isMarathi ? get('craft_pillar2_desc_mr') : get('craft_pillar2_desc_en'),
     },
     {
       num: '03',
-      title: isMarathi ? 'सेंद्रिय गूळ व ओल्या नारळाचे सारण' : 'Fresh Coconut & Organic Jaggery',
-      desc: isMarathi
-        ? 'ताज्या ओल्या नारळाचा चव, कोल्हापुरी रसायनमुक्त गूळ, वेलची व जायफळाचा मनमोहक नैसर्गिक सुगंध.'
-        : 'Freshly grated Konkan coconut slow-braised with organic chemical-free Kolhapuri jaggery, green cardamom, and fresh nutmeg.'
+      title: isMarathi ? get('craft_pillar3_title_mr') : get('craft_pillar3_title_en'),
+      desc: isMarathi ? get('craft_pillar3_desc_mr') : get('craft_pillar3_desc_en'),
     },
     {
       num: '04',
-      title: isMarathi ? 'साजूक तूप व काश्मिरी केशर' : 'Pure A2 Cow Ghee & Kashmiri Saffron',
-      desc: isMarathi
-        ? 'शुद्ध साजूक तुपाची धार आणि अस्सल काश्मिरी केशर मोदकाच्या शिखरावर.'
-        : 'Finished with authentic golden A2 cow ghee and hand-plucked Kashmiri saffron strands on the modak peak.'
+      title: isMarathi ? get('craft_pillar4_title_mr') : get('craft_pillar4_title_en'),
+      desc: isMarathi ? get('craft_pillar4_desc_mr') : get('craft_pillar4_desc_en'),
     }
   ];
 
@@ -51,17 +45,15 @@ export const HeritageCraftStory: React.FC<HeritageCraftStoryProps> = ({ language
         <div className="text-center max-w-3xl mx-auto mb-14 space-y-3">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#E89A25]/20 border border-[#E89A25]/30 text-[#E89A25] text-xs font-bold uppercase tracking-wider">
             <ChefHat className="w-3.5 h-3.5" />
-            <span>{isMarathi ? 'पाककला रहस्य व तंत्र' : 'Artisan Craft & Studio Secrets'}</span>
+            <span>{isMarathi ? get('craft_eyebrow_mr') : get('craft_eyebrow_en')}</span>
           </div>
 
           <h2 className="font-devanagari text-3xl sm:text-4xl lg:text-5xl font-black text-[#FAF7F2]">
-            {isMarathi ? '२१ कळ्यांचे अचूक तंत्र आणि स्टुडिओ कारागिरी' : 'The Secret Science of 21 Pleats: Master Halwai Technique'}
+            {isMarathi ? get('craft_heading_mr') : get('craft_heading_en')}
           </h2>
 
           <p className="text-white/80 text-sm sm:text-base leading-relaxed">
-            {isMarathi
-              ? 'शतकानुशतके जपलेली पारंपरिक कारागिरी आणि आधुनिक पाककला स्टुडिओचे परिपूर्ण संयोजन — स्वादः परमानन्दः'
-              : 'Combining centuries-old Maharashtrian confectionery heritage with modern culinary workshop precision for the ultimate taste.'}
+            {isMarathi ? get('craft_subheading_mr') : get('craft_subheading_en')}
           </p>
         </div>
 
@@ -82,10 +74,10 @@ export const HeritageCraftStory: React.FC<HeritageCraftStoryProps> = ({ language
               {/* Bottom Quote inside Image */}
               <div className="absolute bottom-4 left-4 right-4 p-4 rounded-2xl bg-[#0f3c36]/90 backdrop-blur-md border border-[#E89A25]/30">
                 <span className="font-devanagari text-xs text-[#E89A25] font-bold block mb-1">
-                  {isMarathi ? '२१ कळ्यांचे सूत्र' : 'The 21-Pleat Mastery'}
+                  {isMarathi ? get('craft_quote_label_mr') : get('craft_quote_label_en')}
                 </span>
                 <p className="text-xs text-white/90 italic">
-                  &ldquo;{isMarathi ? 'अचूक २१ कळ्यांची घडी, प्रत्येक तुकड्यात शुद्ध चवीची गोडी.' : 'Twenty-one precise folds crafted with rhythm, balance, and pure organic ingredients.'}&rdquo;
+                  &ldquo;{isMarathi ? get('craft_quote_text_mr') : get('craft_quote_text_en')}&rdquo;
                 </p>
               </div>
             </div>
@@ -122,12 +114,10 @@ export const HeritageCraftStory: React.FC<HeritageCraftStoryProps> = ({ language
               </div>
               <div className="space-y-0.5">
                 <h5 className="font-bold text-sm text-[#F5EEDB]">
-                  {isMarathi ? '१००% शून्य भेसळ हमीपत्र' : '100% Zero-Adulteration Culinary Pledge'}
+                  {isMarathi ? get('craft_pledge_title_mr') : get('craft_pledge_title_en')}
                 </h5>
                 <p className="text-xs text-white/80">
-                  {isMarathi
-                    ? 'कृत्रिम रंग, प्रिझर्व्हेटिव्ह्ज किंवा रिफाइंड साखरेचा शून्य वापर. केवळ शुद्ध घटक.'
-                    : 'No artificial flavors, zero chemical preservatives, no palm oil. Pure heirloom ingredients prepared in our sanitized culinary studio kitchen.'}
+                  {isMarathi ? get('craft_pledge_desc_mr') : get('craft_pledge_desc_en')}
                 </p>
               </div>
             </div>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ModakProduct, ProductPriceTier } from '../../types';
-import { X, Plus, Trash2, Sparkles, Image as ImageIcon } from 'lucide-react';
+import { X, Plus, Trash2, Sparkles } from 'lucide-react';
+import { ImageUploadField } from './ImageUploadField';
 
 interface ProductFormModalProps {
   isOpen: boolean;
@@ -248,29 +249,8 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
             />
           </div>
 
-          {/* Image URL with Preview */}
-          <div>
-            <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
-              Product Image URL
-            </label>
-            <div className="flex items-center gap-3">
-              <div className="relative flex-1">
-                <input
-                  type="url"
-                  value={image}
-                  onChange={e => setImage(e.target.value)}
-                  placeholder="https://images.unsplash.com/..."
-                  className="w-full pl-9 pr-3.5 py-2.5 rounded-xl border border-gray-300 focus:outline-none focus:border-[#18564D] text-sm"
-                />
-                <ImageIcon className="w-4 h-4 text-gray-400 absolute left-3 top-3.5" />
-              </div>
-              {image && (
-                <div className="w-11 h-11 rounded-xl overflow-hidden border border-gray-200 shrink-0 bg-gray-50">
-                  <img src={image} alt="Preview" className="w-full h-full object-cover" />
-                </div>
-              )}
-            </div>
-          </div>
+          {/* Image — upload a file (auto-committed to Git) or paste a URL */}
+          <ImageUploadField label="Product Image" value={image} onChange={setImage} />
 
           {/* Descriptions */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

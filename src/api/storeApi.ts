@@ -1,5 +1,5 @@
-import { ModakProduct, StoreSettings, DeliverySlot, CustomerOrder } from '../types';
-import { PRODUCTS, DELIVERY_SLOTS } from '../data/products';
+import { ModakProduct, StoreSettings, DeliverySlot, CustomerOrder, WorkshopSession } from '../types';
+import { PRODUCTS, DELIVERY_SLOTS, WORKSHOP_SESSIONS } from '../data/products';
 
 const DEFAULT_SETTINGS: StoreSettings = {
   storeName: '21 Kalya Modak',
@@ -86,5 +86,32 @@ export const storeApi = {
       throw new Error(data.message || 'Could not load your orders.');
     }
     return data;
+  },
+
+  // Workshop sessions — falls back to the bundled sample sessions until an
+  // admin adds real ones via the admin panel's Workshops tab.
+  async getWorkshops(): Promise<WorkshopSession[]> {
+    try {
+      const res = await fetch('/api/workshops');
+      if (res.ok) {
+        const data = await res.json();
+        if (Array.isArray(data) && data.length > 0) return data;
+      }
+    } catch {
+      // pass
+    }
+    return WORKSHOP_SESSIONS;
+  },
+
+  // Editable site text overrides, keyed by content ID (see data/siteContent.ts).
+  // Any key not present here just means "use the hardcoded default".
+  async getContent(): Promise<Record<string, string>> {
+    try {
+      const res = await fetch('/api/content');
+      if (res.ok) return await res.json();
+    } catch {
+      // pass
+    }
+    return {};
   }
 };

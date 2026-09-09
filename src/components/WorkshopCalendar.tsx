@@ -1,6 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { WORKSHOP_SESSIONS } from '../data/products';
-import { CartItem } from '../types';
+import { WorkshopSession, CartItem } from '../types';
 import { Reveal } from './Reveal';
 import { WorkshopCarouselSection } from './WorkshopCarouselSection';
 import {
@@ -15,6 +14,7 @@ import {
 } from 'lucide-react';
 
 interface WorkshopCalendarProps {
+  sessions: WorkshopSession[];
   onAddToCart: (item: CartItem) => void;
   onOpenBulkInquiry: () => void;
   language: 'en' | 'mr';
@@ -23,6 +23,7 @@ interface WorkshopCalendarProps {
 type SortOption = 'upcoming' | 'price-low' | 'price-high' | 'seats';
 
 export const WorkshopCalendar: React.FC<WorkshopCalendarProps> = ({
+  sessions,
   onAddToCart,
   onOpenBulkInquiry: _onOpenBulkInquiry,
   language
@@ -35,24 +36,24 @@ export const WorkshopCalendar: React.FC<WorkshopCalendarProps> = ({
   const [sortBy, setSortBy] = useState<SortOption>('upcoming');
 
   const typeOptions = useMemo(
-    () => ['All Types', ...Array.from(new Set(WORKSHOP_SESSIONS.map(s => s.level)))],
-    []
+    () => ['All Types', ...Array.from(new Set(sessions.map(s => s.level)))],
+    [sessions]
   );
   const dateOptions = useMemo(
-    () => ['All Dates', ...Array.from(new Set(WORKSHOP_SESSIONS.map(s => s.day)))],
-    []
+    () => ['All Dates', ...Array.from(new Set(sessions.map(s => s.day)))],
+    [sessions]
   );
   const locationOptions = useMemo(() => {
     const cities = ['Pune', 'Mumbai', 'Thane'];
-    return ['All Locations', ...cities.filter(city => WORKSHOP_SESSIONS.some(s => s.location.includes(city)))];
-  }, []);
+    return ['All Locations', ...cities.filter(city => sessions.some(s => s.location.includes(city)))];
+  }, [sessions]);
 
   // Apply the shared filter/sort controls first, then split the result into
   // the three carousel sections by `mode`. Add more sessions with
-  // mode: 'online' | 'offline' | 'type3' in data/products.ts and each
+  // mode: 'online' | 'offline' | 'type3' from Admin → Workshops and each
   // carousel below picks them up automatically — no other changes needed.
   const visibleSessions = useMemo(() => {
-    let list = WORKSHOP_SESSIONS.filter(s => {
+    let list = sessions.filter(s => {
       const matchesType = typeFilter === 'All Types' || s.level === typeFilter;
       const matchesDate = dateFilter === 'All Dates' || s.day === dateFilter;
       const matchesLocation = locationFilter === 'All Locations' || s.location.includes(locationFilter);
@@ -71,7 +72,7 @@ export const WorkshopCalendar: React.FC<WorkshopCalendarProps> = ({
     });
 
     return list;
-  }, [typeFilter, dateFilter, locationFilter, sortBy]);
+  }, [sessions, typeFilter, dateFilter, locationFilter, sortBy]);
 
   const onlineSessions = useMemo(
     () => visibleSessions.filter(s => s.mode === 'online'),

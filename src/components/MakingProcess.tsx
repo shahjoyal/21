@@ -3,6 +3,7 @@ import { motion } from 'motion/react';
 import { Sparkles } from 'lucide-react';
 import { Reveal, RevealGroup, revealItemVariants } from './Reveal';
 import { HERO_IMAGE, UKADICHE_STEAMING_IMAGE, CRAFT_MAKING_IMAGE, ASSORTED_BOX_IMAGE } from '../data/products';
+import { useSiteContent } from '../hooks/useSiteContent';
 
 interface MakingProcessProps {
   language: 'en' | 'mr';
@@ -10,39 +11,32 @@ interface MakingProcessProps {
 
 export const MakingProcess: React.FC<MakingProcessProps> = ({ language }) => {
   const isMarathi = language === 'mr';
+  const { get } = useSiteContent();
 
   const steps = [
     {
       num: '1',
       image: HERO_IMAGE,
-      title: isMarathi ? 'सामग्रीची निवड' : 'Selecting Ingredients',
-      desc: isMarathi
-        ? 'ताजा नारळ, आंबेमोहर तांदूळ व सेंद्रिय गूळ यांची काळजीपूर्वक निवड.'
-        : 'Sourcing farm-fresh coconut, Ambemohar rice & organic jaggery.',
+      title: isMarathi ? get('process_step1_title_mr') : get('process_step1_title_en'),
+      desc: isMarathi ? get('process_step1_desc_mr') : get('process_step1_desc_en'),
     },
     {
       num: '2',
       image: UKADICHE_STEAMING_IMAGE,
-      title: isMarathi ? 'उकड शिजवणे' : 'Steaming the Ukad',
-      desc: isMarathi
-        ? 'तांदळाच्या पिठाची मऊ, मुलायम उकड मंद वाफेवर तयार केली जाते.'
-        : 'Rice flour is kneaded and steamed into a soft, silky dough.',
+      title: isMarathi ? get('process_step2_title_mr') : get('process_step2_title_en'),
+      desc: isMarathi ? get('process_step2_desc_mr') : get('process_step2_desc_en'),
     },
     {
       num: '3',
       image: CRAFT_MAKING_IMAGE,
-      title: isMarathi ? '२१ कळ्यांची हाताने घडण' : 'Hand-Pleating 21 Folds',
-      desc: isMarathi
-        ? 'आमचे मास्टर कारागीर हाताने अस्सल २१ कळ्या घडवतात.'
-        : 'Master halwais hand-craft each of the signature 21 pleats.',
+      title: isMarathi ? get('process_step3_title_mr') : get('process_step3_title_en'),
+      desc: isMarathi ? get('process_step3_desc_mr') : get('process_step3_desc_en'),
     },
     {
       num: '4',
       image: ASSORTED_BOX_IMAGE,
-      title: isMarathi ? 'ताजे पॅक, उबदार डिलिव्हरी' : 'Packed Fresh & Delivered',
-      desc: isMarathi
-        ? 'प्रीमियम पॅकेजिंगमध्ये बंद करून थेट तुमच्या दारी पोहोचवले जाते.'
-        : 'Boxed in premium packaging and rushed straight to your doorstep.',
+      title: isMarathi ? get('process_step4_title_mr') : get('process_step4_title_en'),
+      desc: isMarathi ? get('process_step4_desc_mr') : get('process_step4_desc_en'),
     },
   ];
 
@@ -59,15 +53,13 @@ export const MakingProcess: React.FC<MakingProcessProps> = ({ language }) => {
         <Reveal className="text-center max-w-2xl mx-auto mb-14 sm:mb-16 space-y-3">
           <span className="inline-flex items-center gap-1.5 text-[11px] sm:text-xs font-bold uppercase tracking-[0.2em] text-[#E89A25]">
             <Sparkles className="w-3.5 h-3.5" />
-            {isMarathi ? 'निर्मिती प्रक्रिया' : 'The Making Process'}
+            {isMarathi ? get('process_eyebrow_mr') : get('process_eyebrow_en')}
           </span>
           <h2 className="font-serif-luxury text-3xl sm:text-4xl lg:text-5xl font-bold text-[#134e48] leading-tight">
-            {isMarathi ? <>स्वयंपाकघरापासून तुमच्या दारापर्यंत</> : <>From Kitchen to Your Doorstep</>}
+            {isMarathi ? get('process_heading_mr') : get('process_heading_en')}
           </h2>
           <p className="text-gray-600 text-sm sm:text-base leading-relaxed">
-            {isMarathi
-              ? 'प्रत्येक मोदक काटेकोर प्रक्रियेतून जातो, जेणेकरून प्रत्येक घासात परिपूर्णता मिळेल.'
-              : 'Every modak goes through a meticulous process to ensure perfection in every bite.'}
+            {isMarathi ? get('process_subheading_mr') : get('process_subheading_en')}
           </p>
         </Reveal>
 

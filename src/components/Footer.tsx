@@ -1,6 +1,7 @@
 import React from 'react';
 import brandLogoImg from '../assets/images/regenerated_image_1787347112518.png';
 import { Phone, MapPin, ShieldCheck, Clock, Award, MessageCircle, ChefHat } from 'lucide-react';
+import { useSiteContent } from '../hooks/useSiteContent';
 
 interface FooterProps {
   onOpenBulkInquiry: () => void;
@@ -9,6 +10,7 @@ interface FooterProps {
 
 export const Footer: React.FC<FooterProps> = ({ onOpenBulkInquiry, language }) => {
   const isMarathi = language === 'mr';
+  const { get } = useSiteContent();
 
   return (
     <footer className="bg-[#0b2b27] text-white pt-16 pb-12 relative overflow-hidden">
@@ -42,9 +44,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenBulkInquiry, language }) =
             </div>
 
             <p className="text-xs text-white/80 leading-relaxed max-w-sm">
-              {isMarathi
-                ? 'महाराष्ट्राची अस्सल पाककला ओळख असलेले २१ कळ्यांचे उकडीचे मोदक, शेफ मास्टरक्लास कार्यशाळा आणि DIY किट्स. आंबेमोहर तांदूळ, सेंद्रिय गूळ आणि १००% शुद्ध साजूक तूप.'
-                : 'Dedicated to the culinary art of handcrafting genuine 21-pleated Ukadiche Modaks, live masterclasses, and gourmet DIY artisan kits.'}
+              {isMarathi ? get('footer_philosophy_mr') : get('footer_philosophy_en')}
             </p>
 
             {/* Certifications Badge */}
@@ -63,26 +63,20 @@ export const Footer: React.FC<FooterProps> = ({ onOpenBulkInquiry, language }) =
           {/* Outlets & Studios (4 cols) */}
           <div className="md:col-span-4 space-y-3">
             <h4 className="font-devanagari font-bold text-base text-[#E89A25] tracking-wider uppercase">
-              {isMarathi ? 'आमचे प्रमुख स्टुडिओ व स्वयंपाकघर' : 'Culinary Studios & Outlets'}
+              {isMarathi ? get('footer_studios_heading_mr') : get('footer_studios_heading_en')}
             </h4>
             <div className="space-y-2 text-xs text-white/80">
               <div className="flex items-start gap-2">
                 <MapPin className="w-4 h-4 text-[#E89A25] shrink-0 mt-0.5" />
-                <div>
-                  <strong className="text-white">Pune Studio:</strong> Prabhat Road, Lane 4, Deccan Gymkhana, Pune – 411004.
-                </div>
+                <div>{get('footer_studio1')}</div>
               </div>
               <div className="flex items-start gap-2">
                 <MapPin className="w-4 h-4 text-[#E89A25] shrink-0 mt-0.5" />
-                <div>
-                  <strong className="text-white">Mumbai Kitchen & Studio:</strong> Ranade Road, Dadar West, Mumbai – 400028.
-                </div>
+                <div>{get('footer_studio2')}</div>
               </div>
               <div className="flex items-start gap-2">
                 <MapPin className="w-4 h-4 text-[#E89A25] shrink-0 mt-0.5" />
-                <div>
-                  <strong className="text-white">Thane Workshop Counter:</strong> Naupada, Gokhale Road, Thane – 400602.
-                </div>
+                <div>{get('footer_studio3')}</div>
               </div>
             </div>
           </div>
@@ -90,7 +84,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenBulkInquiry, language }) =
           {/* Quick Contacts & Helpline (3 cols) */}
           <div className="md:col-span-3 space-y-3">
             <h4 className="font-devanagari font-bold text-base text-[#E89A25] tracking-wider uppercase">
-              {isMarathi ? 'कार्यशाळा नोंदणी व ग्राहक सेवा' : 'Workshop & Order Helpline'}
+              {isMarathi ? get('footer_helpline_heading_mr') : get('footer_helpline_heading_en')}
             </h4>
             <div className="space-y-2 text-xs text-white/80">
               <a
@@ -113,7 +107,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenBulkInquiry, language }) =
 
               <div className="flex items-center gap-2 text-white/70">
                 <Clock className="w-4 h-4 text-[#E89A25]" />
-                <span>Studio Hours: 9:00 AM – 8:00 PM</span>
+                <span>{get('footer_studio_hours')}</span>
               </div>
 
               <div className="pt-2">

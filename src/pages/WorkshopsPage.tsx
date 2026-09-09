@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useOutletContext } from 'react-router-dom';
 import {
   ChefHat,
@@ -17,10 +17,20 @@ import { WorkshopCalendar } from '../components/WorkshopCalendar';
 import { Reveal } from '../components/Reveal';
 import { HERO_IMAGE } from '../data/products';
 import { OutletContextType } from './Layout';
+import { useSiteContent } from '../hooks/useSiteContent';
+import { storeApi } from '../api/storeApi';
+import { WorkshopSession } from '../types';
 
 export default function WorkshopsPage() {
   const ctx = useOutletContext<OutletContextType>();
   const isMarathi = ctx.language === 'mr';
+  const { get } = useSiteContent();
+
+  const [sessions, setSessions] = useState<WorkshopSession[]>([]);
+
+  useEffect(() => {
+    storeApi.getWorkshops().then(setSessions);
+  }, []);
 
   const heroFeatures = [
     {
@@ -85,23 +95,21 @@ export default function WorkshopsPage() {
               <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-[#E89A25]/50 bg-[#E89A25]/10">
                 <ChefHat className="w-3.5 h-3.5 text-[#E89A25]" />
                 <span className="text-[#F5EEDB] text-[10px] sm:text-xs font-bold tracking-wider uppercase font-devanagari-body">
-                  {isMarathi ? 'सत्र आरक्षण' : 'Session Booking'}
+                  {isMarathi ? get('workshops_hero_eyebrow_mr') : get('workshops_hero_eyebrow_en')}
                 </span>
               </div>
 
               <h1 className="font-devanagari text-3xl sm:text-4xl lg:text-[3.1rem] font-extrabold leading-[1.08] tracking-tight">
                 <span className="block text-[#FAF7F2] uppercase">
-                  {isMarathi ? 'कार्यशाळा किंवा' : 'Book a Workshop or'}
+                  {isMarathi ? get('workshops_hero_headline1_mr') : get('workshops_hero_headline1_en')}
                 </span>
                 <span className="block text-[#E89A25] uppercase">
-                  {isMarathi ? 'मास्टरक्लास बुक करा' : 'Masterclass'}
+                  {isMarathi ? get('workshops_hero_headline2_mr') : get('workshops_hero_headline2_en')}
                 </span>
               </h1>
 
               <p className="text-white/75 text-sm sm:text-base max-w-md leading-relaxed">
-                {isMarathi
-                  ? 'आमच्या अनुभवी शेफकडून थेट शिका आणि तुमची जागा आताच आरक्षित करा.'
-                  : 'Reserve your seat in a hands-on 21-pleat masterclass, taught live by our master artisans.'}
+                {isMarathi ? get('workshops_hero_paragraph_mr') : get('workshops_hero_paragraph_en')}
               </p>
 
               {/* Feature Row */}
@@ -146,6 +154,7 @@ export default function WorkshopsPage() {
       </section>
 
       <WorkshopCalendar
+        sessions={sessions}
         onAddToCart={ctx.onAddToCart}
         onOpenBulkInquiry={ctx.onOpenBulkInquiry}
         language={ctx.language}
