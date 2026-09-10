@@ -79,7 +79,7 @@ export default function WorkshopsPage() {
       {/* Full-Bleed Split Hero Banner */}
       <section className="relative overflow-hidden bg-gradient-to-br from-[#0f3c36] via-[#134e48] to-[#0f3c36] text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-6 items-stretch py-8 sm:py-10 lg:pt-8 lg:pb-12">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-6 items-stretch pt-8 sm:pt-10 lg:pt-8 pb-16 sm:pb-20 lg:pb-24">
 
             {/* Left: Content */}
             <Reveal className="space-y-4 sm:space-y-5 order-2 lg:order-1 flex flex-col justify-center">
@@ -142,8 +142,11 @@ export default function WorkshopsPage() {
           </div>
         </div>
 
-        {/* Decorative wave transition into content section */}
-        <div className="absolute -bottom-px left-0 right-0 h-10 sm:h-14 pointer-events-none">
+        {/* Decorative wave transition into content section — reserved height
+            must stay comfortably larger than the section's bottom padding
+            above, so the curve never overlaps the feature-icon text on any
+            screen size. */}
+        <div className="absolute -bottom-px left-0 right-0 h-14 sm:h-20 lg:h-24 pointer-events-none">
           <svg viewBox="0 0 1200 60" preserveAspectRatio="none" className="w-full h-full">
             <path
               d="M0,60 L0,30 C250,60 450,0 600,0 C750,0 950,60 1200,30 L1200,60 Z"
