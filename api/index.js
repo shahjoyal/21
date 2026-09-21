@@ -11,6 +11,7 @@ import paymentRoutes from "../server/routes/paymentRoutes.js";
 import settingsRoutes from "../server/routes/settingsRoutes.js";
 import promoRoutes from "../server/routes/promoRoutes.js";
 import workshopRoutes from "../server/routes/workshopRoutes.js";
+import ourProductsRoutes from "../server/routes/ourProductsRoutes.js";
 import contentRoutes from "../server/routes/contentRoutes.js";
 import uploadRoutes from "../server/routes/uploadRoutes.js";
 
@@ -52,6 +53,7 @@ app.use("/api/orders", orderRoutes);
 app.use("/api/payment", paymentRoutes);
 app.use("/api/promocodes", promoRoutes);
 app.use("/api/workshops", workshopRoutes);
+app.use("/api/our-products", ourProductsRoutes);
 app.use("/api/content", contentRoutes);
 app.use("/api/upload", uploadRoutes);
 

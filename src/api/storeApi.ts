@@ -1,5 +1,5 @@
-import { ModakProduct, StoreSettings, DeliverySlot, CustomerOrder, WorkshopSession } from '../types';
-import { PRODUCTS, DELIVERY_SLOTS, WORKSHOP_SESSIONS } from '../data/products';
+import { ModakProduct, StoreSettings, DeliverySlot, CustomerOrder, WorkshopSession, OurProduct } from '../types';
+import { PRODUCTS, DELIVERY_SLOTS, WORKSHOP_SESSIONS, OUR_PRODUCTS } from '../data/products';
 
 const DEFAULT_SETTINGS: StoreSettings = {
   storeName: '21 Kalya Modak',
@@ -113,5 +113,20 @@ export const storeApi = {
       // pass
     }
     return {};
+  },
+
+  // "Our Products" pantry items (flour, kesar, rose syrup, etc.) — falls
+  // back to the bundled sample products until an admin adds real ones.
+  async getOurProducts(): Promise<OurProduct[]> {
+    try {
+      const res = await fetch('/api/our-products');
+      if (res.ok) {
+        const data = await res.json();
+        if (Array.isArray(data) && data.length > 0) return data;
+      }
+    } catch {
+      // pass
+    }
+    return OUR_PRODUCTS;
   }
 };

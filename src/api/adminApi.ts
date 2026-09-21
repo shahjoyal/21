@@ -1,4 +1,4 @@
-import { ModakProduct, CustomerOrder, StoreSettings, DeliverySlot, AuthUser, PromoCode, WorkshopSession } from '../types';
+import { ModakProduct, CustomerOrder, StoreSettings, DeliverySlot, AuthUser, PromoCode, WorkshopSession, OurProduct } from '../types';
 
 async function req(path: string, options: RequestInit = {}) {
   const res = await fetch(`/api${path}`, {
@@ -122,5 +122,19 @@ export const adminApi = {
       throw new Error(data.message || 'Image upload failed.');
     }
     return data;
+  },
+
+  // Our Products (pantry items: flour, kesar, rose syrup, etc.)
+  getOurProducts(): Promise<OurProduct[]> {
+    return req('/our-products');
+  },
+  createOurProduct(product: Partial<OurProduct>): Promise<OurProduct> {
+    return req('/our-products', { method: 'POST', body: JSON.stringify(product) });
+  },
+  updateOurProduct(id: string, product: Partial<OurProduct>): Promise<OurProduct> {
+    return req(`/our-products/${id}`, { method: 'PUT', body: JSON.stringify(product) });
+  },
+  deleteOurProduct(id: string): Promise<{ success: boolean }> {
+    return req(`/our-products/${id}`, { method: 'DELETE' });
   },
 };

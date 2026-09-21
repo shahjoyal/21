@@ -167,12 +167,25 @@ export interface PromoCode {
   createdAt?: string;
 }
 
-// A promo code the customer has successfully applied to their cart —
-// kept separate from PromoCode (the admin-managed record) since this is
+// A promo code the customer has successfully applied to their cart —// kept separate from PromoCode (the admin-managed record) since this is
 // just the small bit of info the storefront needs at checkout time.
 export interface AppliedPromo {
   code: string;
   percentOff: number;
+}
+
+// ---- Our Products (pantry items: flour, kesar, rose syrup, etc.) ----
+export interface OurProduct {
+  id: string;
+  name: string;
+  marathiName: string;
+  description: string;
+  marathiDescription: string;
+  unit: string; // e.g. "500g", "10g", "750ml"
+  price: number;
+  originalPrice?: number;
+  image: string;
+  inStock: boolean;
 }
 
 // ---- Auth ----

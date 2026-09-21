@@ -1,4 +1,4 @@
-import { ModakProduct, DeliverySlot, WorkshopSession, Review } from '../types';
+import { ModakProduct, DeliverySlot, WorkshopSession, Review, OurProduct } from '../types';
 
 import heroImg from '../assets/images/hero_modak_platter_1787344190381.jpg';
 import assortedBoxImg from '../assets/images/assorted_modak_box_1787344207719.jpg';
@@ -214,6 +214,48 @@ export const DELIVERY_SLOTS: DeliverySlot[] = [
     idealFor: 'Evening Family Workshops, Corporate Mixers & Fresh Boxes',
     available: true
   }
+];
+
+// ---- Our Products: pantry staples (flour, kesar, rose syrup, etc.) ----
+// Shown as a bundled fallback until an admin adds real ones via
+// Admin → Our Products. Placeholder images here are random stock photos —
+// swap them for real product photos anytime via the admin upload field.
+export const OUR_PRODUCTS: OurProduct[] = [
+  {
+    id: 'our-product-ambemohar-flour',
+    name: 'Ambemohar Rice Flour',
+    marathiName: 'आंबेमोहर तांदळाचे पीठ',
+    description: 'Stone-ground fragrant Ambemohar rice flour, the same batch we use in our own kitchen for the softest, crack-free ukad.',
+    marathiDescription: 'आमच्या स्वयंपाकघरात वापरले जाणारे तेच सुगंधी आंबेमोहर तांदळाचे दळलेले पीठ.',
+    unit: '500g',
+    price: 149,
+    originalPrice: 179,
+    image: HERO_IMAGE,
+    inStock: true,
+  },
+  {
+    id: 'our-product-kashmiri-kesar',
+    name: 'Kashmiri Kesar (Saffron)',
+    marathiName: 'काश्मिरी केशर',
+    description: 'Hand-plucked, deep-red Kashmiri saffron strands — the finishing touch on our modaks and a staple for your own kitchen.',
+    marathiDescription: 'हाताने वेचलेले, गडद लाल रंगाचे अस्सल काश्मिरी केशर.',
+    unit: '2g',
+    price: 299,
+    image: CRAFT_MAKING_IMAGE,
+    inStock: true,
+  },
+  {
+    id: 'our-product-rose-syrup',
+    name: 'Rose Syrup',
+    marathiName: 'गुलाब सरबत',
+    description: 'A fragrant, naturally sweetened rose syrup — perfect for sherbets, milk, or drizzling over desserts.',
+    marathiDescription: 'नैसर्गिकरित्या गोड केलेले सुगंधी गुलाब सरबत.',
+    unit: '750ml',
+    price: 199,
+    originalPrice: 229,
+    image: ASSORTED_BOX_IMAGE,
+    inStock: true,
+  },
 ];
 
 export const WORKSHOP_SESSIONS: WorkshopSession[] = [

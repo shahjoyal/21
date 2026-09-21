@@ -77,6 +77,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   const t = {
     home: language === 'mr' ? 'मुख्यपृष्ठ' : 'Home',
     shop: language === 'mr' ? 'मोदक खरेदी करा' : 'Shop Modak',
+    ourProducts: language === 'mr' ? 'आमची उत्पादने' : 'Our Products',
     workshops: language === 'mr' ? 'कार्यशाळा बुक करा' : 'Book Workshop',
     about: language === 'mr' ? 'आमच्याविषयी' : 'About Us',
     bulkInquiry: language === 'mr' ? 'कॉर्पोरेट कार्यशाळा नोंदणी' : 'Group & Corporate Booking',
@@ -89,6 +90,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   const navLinks = [
     { label: t.home, path: '/' },
     { label: t.shop, path: '/shop' },
+    { label: t.ourProducts, path: '/our-products' },
     { label: t.workshops, path: '/workshops' },
     { label: t.about, path: '/about' },
   ];

@@ -6,6 +6,7 @@ import { OrderDetailsModal } from './OrderDetailsModal';
 import { StoreSettingsTab } from './StoreSettingsTab';
 import { PromoCodesTab } from './PromoCodesTab';
 import { WorkshopsTab } from './WorkshopsTab';
+import { OurProductsTab } from './OurProductsTab';
 import { ContentEditorTab } from './ContentEditorTab';
 import { exportOrdersToExcel } from '../../utils/exportOrdersToExcel';
 import {
@@ -32,7 +33,8 @@ import {
   Calendar,
   Truck,
   GraduationCap,
-  FileText
+  FileText,
+  Wheat
 } from 'lucide-react';
 
 interface AdminDashboardProps {
@@ -66,7 +68,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
   onResetDefaults,
   onLogout
 }) => {
-  const [activeTab, setActiveTab] = useState<'products' | 'workshops' | 'orders' | 'slots' | 'promos' | 'content' | 'settings'>('products');
+  const [activeTab, setActiveTab] = useState<'products' | 'workshops' | 'ourProducts' | 'orders' | 'slots' | 'promos' | 'content' | 'settings'>('products');
   const [productSearch, setProductSearch] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   
@@ -290,6 +292,18 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
           >
             <GraduationCap className="w-4 h-4" />
             <span>Workshops</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab('ourProducts')}
+            className={`flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap ${
+              activeTab === 'ourProducts'
+                ? 'bg-[#18564D] text-[#F8EDE0] shadow-md'
+                : 'text-gray-600 hover:bg-gray-100'
+            }`}
+          >
+            <Wheat className="w-4 h-4" />
+            <span>Our Products</span>
           </button>
 
           <button
@@ -720,6 +734,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
 
         {/* Tab: Workshops */}
         {activeTab === 'workshops' && <WorkshopsTab />}
+
+        {activeTab === 'ourProducts' && <OurProductsTab />}
 
         {/* Tab: Page Text / Content Editor */}
         {activeTab === 'content' && <ContentEditorTab />}

@@ -74,8 +74,26 @@ export async function commitImageToGithub(filename, buffer, commitMessage) {
       committed: true,
       pushed: true,
       message: `Committed to ${GITHUB_OWNER}/${GITHUB_REPO}@${GITHUB_BRANCH}: ${repoPath}`,
+      url: `https://cdn.jsdelivr.net/gh/${GITHUB_OWNER}/${GITHUB_REPO}@${GITHUB_BRANCH}/${repoPath}`,
     };
   } catch (err) {
     return { committed: false, pushed: false, message: `GitHub commit error: ${err.message || String(err)}` };
+  }
+}
+
+/**
+ * jsDelivr caches GitHub content aggressively (hours to days). Calling this
+ * after a commit asks jsDelivr to refresh its cache for that one file, so
+ * a freshly uploaded image shows up on the live site within seconds rather
+ * than waiting out the cache TTL. Best-effort — failure here doesn't matter,
+ * the image is still committed and will appear once the cache naturally expires.
+ */
+export async function purgeJsdelivrCache(filename) {
+  if (!isConfigured()) return;
+  const repoPath = `${GITHUB_IMAGE_DIR}/${filename}`;
+  try {
+    await fetch(`https://purge.jsdelivr.net/gh/${GITHUB_OWNER}/${GITHUB_REPO}@${GITHUB_BRANCH}/${repoPath}`);
+  } catch {
+    // best-effort, ignore failures
   }
 }

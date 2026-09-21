@@ -9,6 +9,7 @@ import { Layout, OutletContextType } from './pages/Layout';
 import HomePage from './pages/HomePage';
 import ShopPage from './pages/ShopPage';
 import WorkshopsPage from './pages/WorkshopsPage';
+import OurProductsPage from './pages/OurProductsPage';
 import CheckoutPage from './pages/CheckoutPage';
 import AboutPage from './pages/AboutPage';
 import MyOrdersPage from './pages/MyOrdersPage';
@@ -261,6 +262,7 @@ function AppShell() {
       >
         <Route index element={<HomePage />} />
         <Route path="shop" element={<ShopPage />} />
+        <Route path="our-products" element={<OurProductsPage />} />
         <Route path="workshops" element={<WorkshopsPage />} />
         <Route path="about" element={<AboutPage />} />
         <Route path="checkout" element={<CheckoutPage />} />

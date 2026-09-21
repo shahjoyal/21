@@ -1,23 +1,18 @@
 import express from 'express';
 import multer from 'multer';
-import fs from 'fs';
 import path from 'path';
 import { protectAdmin } from '../middleware/auth.js';
-import { commitImageToGithub } from '../utils/githubImageCommit.js';
+import { commitImageToGithub, purgeJsdelivrCache } from '../utils/githubImageCommit.js';
 
 const router = express.Router();
 
-// Files under public/ are served as-is at the site root by Vite, both in
-// dev and in the production build — so a file saved to
-// "public/uploads/foo.jpg" is reachable at "/uploads/foo.jpg" immediately,
-// regardless of whether the GitHub commit below succeeds or how long it takes.
-const UPLOAD_DIR = path.join(process.cwd(), 'public', 'uploads');
-fs.mkdirSync(UPLOAD_DIR, { recursive: true });
-
+// No local disk writes here — this route runs both on a normal persistent
+// server (server.ts) AND as a Vercel serverless function (api/index.js),
+// and Vercel's filesystem is read-only. Instead, the image is committed
+// straight to your public GitHub repo and served back via jsDelivr's CDN,
+// which works identically in both environments with zero extra config.
 const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
 
-// Memory storage — we need the raw buffer both to write it to disk
-// ourselves (with a sanitized filename) and to send its base64 to GitHub.
 const upload = multer({
   storage: multer.memoryStorage(),
   limits: { fileSize: 8 * 1024 * 1024 }, // 8MB
@@ -38,10 +33,11 @@ function buildFilename(originalname) {
   return `${Date.now()}-${safeBase}${ext}`;
 }
 
-// Admin: upload an image. Saves it to /public/uploads (servable immediately
-// on this running server) then commits the same file to your GitHub repo
-// via the Contents API, using GITHUB_TOKEN / GITHUB_OWNER / GITHUB_REPO /
-// GITHUB_BRANCH / GITHUB_IMAGE_DIR from your .env.
+// Admin: upload an image. Commits it to your GitHub repo via the Contents
+// API (GITHUB_TOKEN / GITHUB_OWNER / GITHUB_REPO / GITHUB_BRANCH /
+// GITHUB_IMAGE_DIR from .env) and returns a jsDelivr CDN URL that serves it
+// — requires the repo to be public, since jsDelivr/raw GitHub URLs can't
+// carry auth for private repos.
 router.post('/image', protectAdmin, (req, res) => {
   upload.single('image')(req, res, async (err) => {
     if (err) {
@@ -52,14 +48,6 @@ router.post('/image', protectAdmin, (req, res) => {
     }
 
     const filename = buildFilename(req.file.originalname);
-    const localPath = path.join(UPLOAD_DIR, filename);
-
-    try {
-      fs.writeFileSync(localPath, req.file.buffer);
-    } catch (writeErr) {
-      console.error('Failed to save uploaded image locally:', writeErr);
-      return res.status(500).json({ message: 'Could not save image on the server.' });
-    }
 
     const githubResult = await commitImageToGithub(
       filename,
@@ -67,8 +55,18 @@ router.post('/image', protectAdmin, (req, res) => {
       `chore: add uploaded image ${filename}`
     );
 
+    if (!githubResult.committed) {
+      // Without a successful GitHub commit there's nowhere to serve this
+      // image from — surface the real reason (bad token, wrong repo, etc.)
+      // so it's obvious what to fix in .env.
+      return res.status(502).json({ message: githubResult.message });
+    }
+
+    // Best-effort: don't block the response on this.
+    purgeJsdelivrCache(filename).catch(() => {});
+
     res.status(201).json({
-      url: `/uploads/${filename}`,
+      url: githubResult.url,
       filename,
       git: githubResult,
     });
