@@ -7,6 +7,7 @@ import { StoreSettingsTab } from './StoreSettingsTab';
 import { PromoCodesTab } from './PromoCodesTab';
 import { WorkshopsTab } from './WorkshopsTab';
 import { OurProductsTab } from './OurProductsTab';
+import { ReviewsTab } from './ReviewsTab';
 import { ContentEditorTab } from './ContentEditorTab';
 import { exportOrdersToExcel } from '../../utils/exportOrdersToExcel';
 import {
@@ -34,21 +35,22 @@ import {
   Truck,
   GraduationCap,
   FileText,
-  Wheat
+  Wheat,
+  Star
 } from 'lucide-react';
 
 interface AdminDashboardProps {
   products: ModakProduct[];
   orders: CustomerOrder[];
   settings: StoreSettings;
-  slots: DeliverySlot[];
+  slots?: DeliverySlot[];
   adminName?: string;
   onSaveProduct: (product: Partial<ModakProduct>) => void;
   onDeleteProduct: (id: string) => void;
   onUpdateOrderStatus: (id: string, status: CustomerOrder['status'], paymentStatus?: CustomerOrder['paymentStatus']) => void;
   onDeleteOrder: (id: string) => void;
   onSaveSettings: (settings: Partial<StoreSettings>) => void;
-  onUpdateSlots: (slots: DeliverySlot[]) => void;
+  onUpdateSlots?: (slots: DeliverySlot[]) => void;
   onResetDefaults: () => void;
   onLogout: () => void;
 }
@@ -57,18 +59,16 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
   products,
   orders,
   settings,
-  slots,
   adminName,
   onSaveProduct,
   onDeleteProduct,
   onUpdateOrderStatus,
   onDeleteOrder,
   onSaveSettings,
-  onUpdateSlots,
   onResetDefaults,
   onLogout
 }) => {
-  const [activeTab, setActiveTab] = useState<'products' | 'workshops' | 'ourProducts' | 'orders' | 'slots' | 'promos' | 'content' | 'settings'>('products');
+  const [activeTab, setActiveTab] = useState<'products' | 'workshops' | 'ourProducts' | 'orders' | 'reviews' | 'promos' | 'content' | 'settings'>('products');
   const [productSearch, setProductSearch] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   
@@ -128,11 +128,6 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
       marathiName: `${prod.marathiName} (प्रत)`
     };
     onSaveProduct(copy);
-  };
-
-  const handleToggleSlotAvailability = (slotId: string) => {
-    const updated = slots.map(s => s.id === slotId ? { ...s, available: !s.available } : s);
-    onUpdateSlots(updated);
   };
 
   const handleExportOrders = () => {
@@ -324,15 +319,15 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
           </button>
 
           <button
-            onClick={() => setActiveTab('slots')}
+            onClick={() => setActiveTab('reviews')}
             className={`flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap ${
-              activeTab === 'slots'
+              activeTab === 'reviews'
                 ? 'bg-[#18564D] text-[#F8EDE0] shadow-md'
                 : 'text-gray-600 hover:bg-gray-100'
             }`}
           >
-            <Clock className="w-4 h-4" />
-            <span>Steaming Slots & Batches</span>
+            <Star className="w-4 h-4" />
+            <span>Reviews</span>
           </button>
 
           <button
@@ -681,53 +676,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
           </div>
         )}
 
-        {/* Tab 3: Steaming Slots & Capacity */}
-        {activeTab === 'slots' && (
-          <div className="space-y-6">
-            <div className="p-5 rounded-3xl bg-white border border-gray-200 shadow-sm space-y-4">
-              <div>
-                <h3 className="text-base font-bold text-[#18564D]">Fresh Steaming Batch Slots (उकडीचे मोदक बॅचेस)</h3>
-                <p className="text-xs text-gray-500">Enable or disable morning, afternoon, and evening live steaming slots according to kitchen capacity.</p>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {slots.map(slot => (
-                  <div
-                    key={slot.id}
-                    className={`p-5 rounded-2xl border transition-all space-y-3 ${
-                      slot.available
-                        ? 'bg-amber-50/50 border-amber-200'
-                        : 'bg-gray-100 border-gray-200 opacity-60'
-                    }`}
-                  >
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs font-bold text-[#18564D] uppercase tracking-wider font-devanagari">
-                        {slot.marathiTitle}
-                      </span>
-                      <button
-                        type="button"
-                        onClick={() => handleToggleSlotAvailability(slot.id)}
-                        className={`px-3 py-1 rounded-full text-xs font-bold transition-all ${
-                          slot.available
-                            ? 'bg-emerald-600 text-white'
-                            : 'bg-gray-400 text-white'
-                        }`}
-                      >
-                        {slot.available ? 'Active & Open' : 'Full / Closed'}
-                      </button>
-                    </div>
-
-                    <h4 className="text-sm font-bold text-gray-900">{slot.title}</h4>
-                    <p className="text-xs font-semibold text-amber-900 bg-white/80 p-2 rounded-lg border border-amber-100">
-                      ⏰ {slot.timeRange}
-                    </p>
-                    <p className="text-xs text-gray-600">{slot.idealFor}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
+        {/* Tab: Customer Reviews (verify & publish) */}
+        {activeTab === 'reviews' && <ReviewsTab />}
 
         {/* Tab 4: Promo Codes */}
         {activeTab === 'promos' && <PromoCodesTab />}

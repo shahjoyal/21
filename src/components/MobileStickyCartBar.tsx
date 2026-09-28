@@ -1,14 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { motion } from 'motion/react';
 import { CartItem } from '../types';
-import { ShoppingBag, ArrowRight, Sparkles, Truck } from 'lucide-react';
+import { ShoppingBag, ArrowRight, Sparkles } from 'lucide-react';
 
 interface MobileStickyCartBarProps {
   cart: CartItem[];
   onOpenCart: () => void;
   onExploreMenu: () => void;
   language: 'en' | 'mr';
-  freeDeliveryThreshold?: number;
 }
 
 export const MobileStickyCartBar: React.FC<MobileStickyCartBarProps> = ({
@@ -16,13 +15,10 @@ export const MobileStickyCartBar: React.FC<MobileStickyCartBarProps> = ({
   onOpenCart,
   onExploreMenu,
   language,
-  freeDeliveryThreshold = 799,
 }) => {
   const isMarathi = language === 'mr';
   const totalCount = cart.reduce((acc, item) => acc + item.quantity, 0);
   const subtotal = cart.reduce((acc, item) => acc + item.unitPrice * item.quantity, 0);
-  const remainingForFreeDelivery = Math.max(0, freeDeliveryThreshold - subtotal);
-  const isFreeDelivery = remainingForFreeDelivery === 0;
 
   // Smooth "bump" feedback on the item count / total whenever the cart changes.
   const [bump, setBump] = useState(false);
@@ -46,14 +42,8 @@ export const MobileStickyCartBar: React.FC<MobileStickyCartBarProps> = ({
     >
       {totalCount > 0 ? (
         <div className="flex flex-col gap-1.5">
-          {/* Micro Free Delivery Indicator */}
-          <div className="flex items-center justify-between text-[10px] text-white/90 font-medium px-1">
-            <span className="flex items-center gap-1">
-              <Truck className="w-3 h-3 text-[#E89A25]" />
-              {isFreeDelivery
-                ? (isMarathi ? '🎉 मोफत एक्सप्रेस डिलिव्हरी लागू!' : '🎉 FREE Express Delivery Unlocked!')
-                : (isMarathi ? `मोफत डिलिव्हरीसाठी आणखी ₹${remainingForFreeDelivery}` : `Add ₹${remainingForFreeDelivery} for FREE Delivery`)}
-            </span>
+          {/* Item count */}
+          <div className="flex items-center justify-end text-[10px] text-white/90 font-medium px-1">
             <motion.span
               key={totalCount}
               initial={{ scale: 1.3, opacity: 0.4 }}

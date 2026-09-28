@@ -1,5 +1,5 @@
-import { ModakProduct, StoreSettings, DeliverySlot, CustomerOrder, WorkshopSession, OurProduct } from '../types';
-import { PRODUCTS, DELIVERY_SLOTS, WORKSHOP_SESSIONS, OUR_PRODUCTS } from '../data/products';
+import { ModakProduct, StoreSettings, DeliverySlot, CustomerOrder, WorkshopSession, OurProduct, Review } from '../types';
+import { PRODUCTS, DELIVERY_SLOTS, WORKSHOP_SESSIONS, OUR_PRODUCTS, REVIEWS } from '../data/products';
 
 const DEFAULT_SETTINGS: StoreSettings = {
   storeName: '21 Kalya Modak',
@@ -128,5 +128,47 @@ export const storeApi = {
       // pass
     }
     return OUR_PRODUCTS;
+  },
+
+  // Reviews — only ever returns admin-approved ones. Falls back to the
+  // bundled sample reviews if the API is unreachable, same pattern as
+  // everything else here.
+  async getReviews(): Promise<Review[]> {
+    try {
+      const res = await fetch('/api/reviews');
+      if (res.ok) {
+        const data = await res.json();
+        if (Array.isArray(data)) return data;
+      }
+    } catch {
+      // Network/API completely unreachable — show the bundled sample
+      // reviews rather than an empty section. An empty array from a
+      // successful request, though, means "no approved reviews yet",
+      // which is a real state we show as-is (not an error to fall back from).
+      return REVIEWS;
+    }
+    return [];
+  },
+
+  // Submit a new review. It's stored unpublished until an admin approves
+  // it from Admin → Reviews — it will not appear on the site until then.
+  async submitReview(review: {
+    author: string;
+    city?: string;
+    rating: number;
+    occasion?: string;
+    comment: string;
+    productName?: string;
+  }): Promise<{ message: string }> {
+    const res = await fetch('/api/reviews', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(review),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      throw new Error(data.message || 'Could not submit your review.');
+    }
+    return data;
   }
 };

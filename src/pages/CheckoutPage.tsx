@@ -81,7 +81,7 @@ export default function CheckoutPage() {
   }, [cart.length]);
 
   const subtotal = cart.reduce((acc, item) => acc + item.unitPrice * item.quantity, 0);
-  const deliveryFee = subtotal >= 799 ? 0 : 60;
+  const deliveryFee = 60; // flat fee — no free-delivery threshold
   const discountAmount = appliedPromo ? Math.round((subtotal * appliedPromo.percentOff) / 100) : 0;
   const grandTotal = subtotal - discountAmount + deliveryFee;
 
@@ -410,7 +410,7 @@ export default function CheckoutPage() {
                     )}
                     <div className="flex items-center justify-between text-gray-600">
                       <span>{isMarathi ? 'डिलिव्हरी शुल्क:' : 'Delivery Fee:'}</span>
-                      <span className="font-bold text-gray-900">{deliveryFee === 0 ? 'FREE' : `₹${deliveryFee}`}</span>
+                      <span className="font-bold text-gray-900">₹{deliveryFee}</span>
                     </div>
                     <div className="flex items-center justify-between font-bold pt-1.5 border-t border-gray-200">
                       <span className="text-gray-700">

@@ -1,4 +1,4 @@
-import { ModakProduct, CustomerOrder, StoreSettings, DeliverySlot, AuthUser, PromoCode, WorkshopSession, OurProduct } from '../types';
+import { ModakProduct, CustomerOrder, StoreSettings, DeliverySlot, AuthUser, PromoCode, WorkshopSession, OurProduct, Review } from '../types';
 
 async function req(path: string, options: RequestInit = {}) {
   const res = await fetch(`/api${path}`, {
@@ -136,5 +136,16 @@ export const adminApi = {
   },
   deleteOurProduct(id: string): Promise<{ success: boolean }> {
     return req(`/our-products/${id}`, { method: 'DELETE' });
+  },
+
+  // Reviews — moderation
+  getAllReviews(): Promise<Review[]> {
+    return req('/reviews/admin/all');
+  },
+  setReviewVerified(id: string, verified: boolean): Promise<Review> {
+    return req(`/reviews/${id}/verify`, { method: 'PATCH', body: JSON.stringify({ verified }) });
+  },
+  deleteReview(id: string): Promise<{ success: boolean }> {
+    return req(`/reviews/${id}`, { method: 'DELETE' });
   },
 };

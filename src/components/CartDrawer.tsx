@@ -8,13 +8,11 @@ import {
   ShoppingBag,
   ArrowRight,
   ShieldCheck,
-  Sparkles,
   MessageCircle,
   Check,
   Tag,
   Loader2,
 } from 'lucide-react';
-import { FreeDeliveryProgressBar } from './FreeDeliveryProgressBar';
 
 interface CartDrawerProps {
   isOpen: boolean;
@@ -59,8 +57,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
   if (!isOpen) return null;
 
   const subtotal = cart.reduce((acc, item) => acc + item.unitPrice * item.quantity, 0);
-  const deliveryThreshold = 799;
-  const deliveryFee = subtotal >= deliveryThreshold ? 0 : 60;
+  const deliveryFee = 60; // flat fee — no free-delivery threshold
   const discountAmount = appliedPromo ? Math.round((subtotal * appliedPromo.percentOff) / 100) : 0;
   const grandTotal = subtotal - discountAmount + deliveryFee;
 
@@ -118,7 +115,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
     const message = `*🌺 २१ कळ्या Modak Studio - Direct Order 🌺*\n\n*Order Items:*\n${itemsSummary}\n\n*Preferred Date:* ${
       deliveryDate || 'Tomorrow Morning'
     }\n*Delivery Slot:* ${selectedDeliverySlot}${promoLine}\n*Order Value:* ₹${grandTotal} (${
-      deliveryFee === 0 ? 'FREE Delivery' : 'Standard Insulated Delivery'
+      'Standard Insulated Delivery'
     })\n\nPlease confirm availability and payment link. ॐ गं गणपतये नमः`;
 
     const url = `https://wa.me/919822121021?text=${encodeURIComponent(message)}`;
@@ -185,13 +182,6 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
               </div>
             ) : (
               <>
-                {/* Free Delivery Progress Bar */}
-                <FreeDeliveryProgressBar
-                  currentAmount={subtotal}
-                  threshold={deliveryThreshold}
-                  language={language}
-                />
-
                 {/* Items List */}
                 <div className="space-y-3">
                   {cart.map((item) => (
@@ -332,15 +322,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
                 )}
                 <div className="flex justify-between text-gray-600">
                   <span>{isMarathi ? 'इन्सुलेटेड वातानुकूलित डिलिव्हरी' : 'Insulated Fresh Delivery'}</span>
-                  <span className="font-bold text-gray-900">
-                    {deliveryFee === 0 ? (
-                      <span className="text-emerald-700 font-bold flex items-center gap-1">
-                        <Sparkles className="w-3 h-3 text-[#E89A25]" /> FREE
-                      </span>
-                    ) : (
-                      `₹${deliveryFee}`
-                    )}
-                  </span>
+                  <span className="font-bold text-gray-900">₹{deliveryFee}</span>
                 </div>
                 <div className="flex justify-between text-base font-black text-[#134e48] pt-2 border-t border-gray-100">
                   <span>{isMarathi ? 'एकूण देय रक्कम' : 'Grand Total'}</span>
